@@ -1,4 +1,4 @@
-package fyp.qian3.Activity;
+package fyp.qian3.ui;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -8,17 +8,18 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import fyp.qian3.R;
-import fyp.qian3.Service.PedoSrv;
+//import fyp.qian3.lib.srv.PedoEvent;
+import fyp.qian3.lib.srv.PedoEventService;
 
 public class HomeAct extends Activity {
     boolean mPedoSrvBound = false;
+    SharedPreferences sharedPrefs;
 
     Button btnSetting;
     // Test
@@ -37,22 +38,15 @@ public class HomeAct extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-        Intent intent = new Intent(this, PedoSrv.class);
-        // Start Service first
-        startService(intent);
-        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+        bindService(new Intent(this, PedoEventService.class), mConnection, Context.BIND_AUTO_CREATE);
+
+        // Abandon as it's implemented in SettingAct
+        //startService(intent);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-
-        // While clearing recent app (swipe out), service will restart (why?) and step counter will reset
-        //  To resume from unexpected clearing, save current steps while quiting UI
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = sharedPrefs.edit();
-        editor.putInt("temp_currSteps", PedoSrv.getStepNumber());
-        editor.commit();
 
         // Unbind from the service
         if (mPedoSrvBound) {
@@ -61,9 +55,11 @@ public class HomeAct extends Activity {
         }
 
         // Shut down service if background running is not allowed
-        if (!sharedPrefs.getBoolean("pref_genPedoSrv", false)) {
-            stopService(new Intent(this, PedoSrv.class));
-        }
+        /** Abandon as it's implemented in SettingAct
+         if (!sharedPrefs.getBoolean("pref_genPedoSrv", false)) {
+         stopService(new Intent(this, StepEventService.class));
+         }
+         */
     }
 
     @Override
@@ -76,7 +72,7 @@ public class HomeAct extends Activity {
         btnSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(HomeAct.this, SettingAct.class);
+                Intent i = new Intent(HomeAct.this, fyp.qian3.ui.SettingAct.class);
                 startActivity(i);
             }
         });
@@ -88,7 +84,7 @@ public class HomeAct extends Activity {
             @Override
             public void onClick(View v) {
                 if (mPedoSrvBound) {
-                    textView.setText(String.valueOf(PedoSrv.getStepNumber()));
+                    textView.setText(String.valueOf(PedoEventService.getCurrStep()));
                 } else {
                     textView.setText("Service Not Bound");
                 }
@@ -96,10 +92,10 @@ public class HomeAct extends Activity {
         });
     }
 
-    private void initSetting() {
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        //
+
+    private void initSetting() {
+        sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
     }
 
     // Defines callbacks for service binding, passed to bindService()
@@ -107,7 +103,7 @@ public class HomeAct extends Activity {
 
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
-            PedoSrv.PedoSrvBinder binder = (PedoSrv.PedoSrvBinder) service;
+            PedoEventService.PedoSrvBinder binder = (PedoEventService.PedoSrvBinder) service;
             mPedoSrvBound = true;
         }
 

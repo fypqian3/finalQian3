@@ -9,7 +9,7 @@
         android:supportsRtl="true" >
 
         <activity
-            android:name=".Activity.GuideAct"
+            android:name=".ui.GuideAct"
             android:screenOrientation="portrait"
             android:label="@string/app_name" >
             <intent-filter>
@@ -20,30 +20,30 @@
         </activity>
 
         <activity
-            android:name=".Activity.LoginAct"
+            android:name=".ui.LoginAct"
             android:screenOrientation="portrait"
             android:label="@string/login_act" />
         <activity
-            android:name=".Activity.HomeAct"
+            android:name=".ui.HomeAct"
             android:screenOrientation="portrait"
             android:label="@string/home_act"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".Activity.SettingAct"
+            android:name=".ui.SettingAct"
             android:screenOrientation="portrait"
             android:label="@string/setting_act" />
-        <activity android:name=".Activity.PersonAct"
+        <activity android:name=".ui.PersonAct"
             android:screenOrientation="portrait"
             android:label="@string/person_act" />
-        <activity android:name=".Activity.StatsAct"
+        <activity android:name=".ui.StatsAct"
             android:screenOrientation="portrait"
             android:label="@string/stats_act" />
-        <activity android:name=".Activity.SocialAct"
+        <activity android:name=".ui.SocialAct"
             android:screenOrientation="portrait"
             android:label="@string/social_act" />
 
         <service
-            android:name=".Service.PedoSrv"
+            android:name=".lib.srv.PedoEventService"
             android:enabled="true"
             android:exported="true" />
     </application>

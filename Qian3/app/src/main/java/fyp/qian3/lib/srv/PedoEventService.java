@@ -1,4 +1,6 @@
-package fyp.qian3.Service;
+package fyp.qian3.lib.srv;
+
+// Static parameters for PedoEventService
 
 import android.app.Service;
 import android.content.Context;
@@ -13,21 +15,27 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-public class PedoSrv extends Service {
 
+public class PedoEventService extends Service {
+
+    private static int CURR_STEP;
     private static final String TAG = "Qian3_Service";
+    private PedoEvent mPedoEvent;
+
+    // Database to store values
+    //private Database db;
 
     // Binder given to clients
     private final IBinder mBinder = new PedoSrvBinder();
     // Sensor event listener
-    private PedoEventListener mPedoEventListener;
+    private XPedoEventListener mPedoEventListener;
     private SensorManager mSensorManager;
 
     // Indicates if service is on or off
-    private static boolean SrvFlag = false;
+    private boolean SrvFlag = false;
 
-    private static int threshold;
-    private static int CurrStep;
+    SharedPreferences sharedPrefs;
+    private int threshold;
 
     @Override
     public void onCreate() {
@@ -36,13 +44,16 @@ public class PedoSrv extends Service {
 
         SrvFlag = true;
 
-        // Load settings and data
-        load();
+        mPedoEvent = new PedoEvent(new onPedoEventListener() {
+        });
+
+        // Load setting & data
+        srvLoadData();
+        srvLoadSetting();
 
         // Sensor monitor
-        mPedoEventListener = new PedoEventListener(this);
+        mPedoEventListener = new XPedoEventListener(this);
         enableAcceMeterListener();
-
     }
 
     @Override
@@ -63,19 +74,24 @@ public class PedoSrv extends Service {
 
         return mBinder;
     }
+
     /**
      * Description:     Load settings and data  from shared preference
      */
-    private void load() {
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        threshold = Integer.parseInt(sharedPrefs.getString("pref_genPedoSens", "10"));
+    private void srvLoadData() {
         // Load from temp data since service is shut down when recent active app list is cleared
-        CurrStep = sharedPrefs.getInt("temp_currSteps", 0);
+        sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        CURR_STEP = sharedPrefs.getInt("temp_currSteps", 0);
+    }
+
+    private void srvLoadSetting() {
+        setSensitive(sharedPrefs.getInt("pref_genPedoSens", 10));
     }
 
     /**
-     *Description:     To enable accelerometer listener
+     * Description:     To enable accelerometer listener
      */
     private void enableAcceMeterListener() {
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -87,18 +103,18 @@ public class PedoSrv extends Service {
     /**
      * Description:     An inner class for override event listener.
      */
-    private class PedoEventListener implements SensorEventListener {
+    private class XPedoEventListener implements SensorEventListener {
         // Temporal Data
         private float prevY;
         private float currY;
 
-        private PedoEventListener(Context context) {
+        private XPedoEventListener(Context context) {
             super();
         }
 
         /**
-                * Description:     Sensor event listener. Change algorithm of detecting steps here
-                */
+         * Description:     Sensor event listener. Change algorithm of detecting steps here
+         */
         @Override
         public void onSensorChanged(SensorEvent event) {
             float x = event.values[0];
@@ -107,8 +123,16 @@ public class PedoSrv extends Service {
 
             currY = y;
 
-            if (Math.abs(currY-prevY)>threshold) {
-                CurrStep++;
+            if (Math.abs(currY - prevY) > threshold) {
+                CURR_STEP++;
+
+                // While clearing recent app (swipe out), service will restart (why?) and step counter will reset
+                //  To resume from unexpected clearing, save current steps while current step is changed
+                SharedPreferences.Editor sharedPrefsEditor = sharedPrefs.edit();
+                sharedPrefsEditor.putInt("temp_currSteps", getCurrStep());
+                sharedPrefsEditor.commit();
+
+                callChangeListener();
             }
 
             prevY = y;
@@ -120,22 +144,31 @@ public class PedoSrv extends Service {
         }
     }
 
-    /***** Methods For Clients *****/
+    private void setSensitive(int newValue) {
+        // Smallest value of newValue = 0, but smallest value of threshold = 1, so +1
+        threshold = newValue + 1;
+    }
+
 
     /**
      * Description:     Used for client Binder.
      */
     public class PedoSrvBinder extends Binder {
-        public PedoSrv getService() {
-            return PedoSrv.this;
+        public PedoEventService getService() {
+            return PedoEventService.this;
         }
     }
 
-    public static boolean getSrvState() {
+    public boolean getSrvState() {
         return SrvFlag;
     }
 
-    public static int getStepNumber() {
-        return CurrStep;
+    public void reloadSrvSetting(Context context) {
+        setSensitive(PreferenceManager.getDefaultSharedPreferences(context).getInt("pref_genPedoSens", 10));
     }
+
+    public static int getCurrStep() {
+        return CURR_STEP;
+    }
+
 }

@@ -1,15 +1,15 @@
-package fyp.qian3.Activity;
+package fyp.qian3.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
 
 import fyp.qian3.R;
 
-public class StatsAct extends Activity {
+public class SocialAct extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_stats);
+        setContentView(R.layout.activity_social);
     }
 }

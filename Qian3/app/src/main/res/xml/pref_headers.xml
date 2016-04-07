@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
+
     <header
-        android:fragment="fyp.qian3.Activity.SettingAct$GeneralPrefFrag"
+        android:fragment="fyp.qian3.ui.SettingAct$GeneralPrefFrag"
         android:title="@string/pref_gen_title"
         android:summary="@string/pref_gen_summary" />
     <header
-        android:fragment="fyp.qian3.Activity.SettingAct$PersonalInfoPrefFrag"
+        android:fragment="fyp.qian3.ui.SettingAct$PersonalInfoPrefFrag"
         android:title="@string/pref_pinfo_title"
         android:summary="@string/pref_pinfo_summary"/>
 </preference-headers>
