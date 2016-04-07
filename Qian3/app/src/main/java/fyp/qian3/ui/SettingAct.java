@@ -1,5 +1,10 @@
 package fyp.qian3.ui;
 
+<<<<<<< HEAD
+=======
+import android.app.ActionBar;
+import android.content.Context;
+>>>>>>> parent of e043dd8... ryan change sth
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,7 +17,11 @@ import android.util.Log;
 import java.util.List;
 
 import fyp.qian3.R;
+<<<<<<< HEAD
 import fyp.qian3.lib.srv.PedoEventService;
+=======
+import fyp.qian3.lib.srv.PedoSrv;
+>>>>>>> parent of e043dd8... ryan change sth
 
 public class SettingAct extends PreferenceActivity {
     @Override
@@ -52,7 +61,11 @@ public class SettingAct extends PreferenceActivity {
         public void onDestroy() {
             super.onDestroy();
             // Reload Service Setting
+<<<<<<< HEAD
             //PedoEvent.PedoEventService.reloadSrvSetting(getActivity());
+=======
+            PedoSrv.reloadSrvSetting(getActivity());
+>>>>>>> parent of e043dd8... ryan change sth
         }
 
         @Override
@@ -63,9 +76,15 @@ public class SettingAct extends PreferenceActivity {
                 case "pref_genPedoSrv":
                     if ((boolean) newValue) {
                         // Is it a correct method to start service?
+<<<<<<< HEAD
                         getActivity().startService(new Intent(getActivity(),  PedoEventService.class));
                     } else {
                         getActivity().stopService(new Intent(getActivity(),  PedoEventService.class));
+=======
+                        getActivity().startService(new Intent(getActivity(), PedoSrv.class));
+                    } else {
+                        getActivity().stopService(new Intent(getActivity(), PedoSrv.class));
+>>>>>>> parent of e043dd8... ryan change sth
                     }
                     break;
                 case "pref_genPedoSens":

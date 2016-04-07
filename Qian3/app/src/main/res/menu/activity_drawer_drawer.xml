@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Home" />
+        <item
+            android:id="@+id/nav_me"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Me" />
+        <item
+            android:id="@+id/nav_goal"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Goal" />
+
+        <item
+            android:id="@+id/nav_history"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="History" />
+        <item
+            android:id="@+id/nav_chart"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Chart" />
+        <item
+            android:id="@+id/nav_achievement"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Achievement" />
+        <item
+            android:id="@+id/nav_leaderboard"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Leaderboard" />
+
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Share" />
+            <item
+                android:id="@+id/nav_setting"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Setting" />
+            <item
+                android:id="@+id/nav_faq"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="FAQ" />
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/ic_menu_send"
+                android:title="About Us" />
+        </menu>
+    </item>
+
+</menu>

@@ -37,6 +37,6 @@
     <string name="pref_pinfoMons_title">Monster</string>
 
     <!-- About Us Preference -->
-
-
+    //login ID//
+    <string name="facebook_app_id">442376969294550</string>
 </resources>
