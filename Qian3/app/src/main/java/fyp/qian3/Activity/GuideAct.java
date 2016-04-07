@@ -1,4 +1,4 @@
-package fyp.qian3.ui;
+package fyp.qian3.Activity;
 
 import android.app.Activity;
 import android.content.Intent;

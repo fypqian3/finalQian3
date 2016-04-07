@@ -6,11 +6,15 @@
             android:title="@string/pref_genPedoSrv_title"
             android:summary="@string/pref_genPedoSrv_summary"
             android:defaultValue="false" />
-        <fyp.qian3.lib.pref.SeekBarPreference
+        <!-- TODO: Change to seekbar -->
+        <EditTextPreference
             android:key="pref_genPedoSens"
             android:title="@string/pref_genPedoSens_title"
-            android:max="20"
-            android:defaultValue="10" />
+            android:summary="@string/pref_genPedoSens_summary"
+            android:defaultValue="10"
+            android:inputType="numberDecimal"
+            android:maxLines="1"
+            android:singleLine="true" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_genOther_title">
         <SwitchPreference

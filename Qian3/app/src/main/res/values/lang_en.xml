@@ -16,7 +16,7 @@
     <string name="pref_genPedoSrv_title">Background process</string>
     <string name="pref_genPedoSrv_summary">Allow pedometer to run in background</string>
     <string name="pref_genPedoSens_title">Sensitive</string>
-    <string name="pref_genPedoSens_summary">Middle</string>
+    <string name="pref_genPedoSens_summary">Lower value means more sensitive to detect your steps</string>
     <string name="pref_genOther_title">Others</string>
     <string name="pref_genOtherNotif_title">Notification</string>
     <string name="pref_genOtherNotif_summary">Notification</string>
@@ -37,6 +37,6 @@
     <string name="pref_pinfoMons_title">Monster</string>
 
     <!-- About Us Preference -->
-    //login ID//
-    <string name="facebook_app_id">442376969294550</string>
+
+
 </resources>
