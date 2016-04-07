@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" xmlns:qian3="http://schemas.android.com/apk/fyp.qian3.lib.pref.SeekBarPreference">
+    <PreferenceCategory android:title="@string/pref_pinfoPers_title">
+        <fyp.qian3.lib.pref.NumberPickerPreference
+            android:key="pref_pinfoPersHeight"
+            android:title="@string/pref_pinfoPersHeight_title"
+            android:summary="@string/pref_pinfoPersHeight_summary"
+            android:selectAllOnFocus="true"
+            android:max="220"
+            qian3:min="100"
+            android:defaultValue="170"
+            android:persistent="true"
+            android:inputType="numberDecimal" />
+        <fyp.qian3.lib.pref.NumberPickerPreference
+            android:key="pref_pinfoPersWeight"
+            android:title="@string/pref_pinfoPersWeight_title"
+            android:summary="@string/pref_pinfoPersWeight_summary"
+            android:selectAllOnFocus="true"
+            android:max="100"
+            qian3:min="20"
+            android:defaultValue="55"
+            android:persistent="true"
+            android:inputType="numberDecimal" />
+        <fyp.qian3.lib.pref.NumberPickerPreference
+            android:key="pref_pinfoPersStepLength"
+            android:title="@string/pref_pinfoPersStepLength_title"
+            android:summary="@string/pref_pinfoPersStepLength_summary"
+            android:selectAllOnFocus="true"
+            android:max="150"
+            qian3:min="20"
+            android:defaultValue="70"
+            android:persistent="true"
+            android:inputType="numberDecimal" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_pinfoMons_title">
+        <!-- TODO: select monster -->
+    </PreferenceCategory>
+</PreferenceScreen>

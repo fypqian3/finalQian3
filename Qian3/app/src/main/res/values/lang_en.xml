@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Activity -->
+    <string name="login_act">Login</string>
+    <string name="home_act">Home</string>
+    <string name="setting_act">Setting</string>
+    <string name="person_act">Personal Data</string>
+    <string name="stats_act">Statistic</string>
+    <string name="social_act">Social</string>
+
+    <!-- Preference -->
+    <!-- General Preference -->
+    <string name="pref_gen_title">General</string>
+    <string name="pref_gen_summary">General settings of this app</string>
+    <string name="pref_genPedo_title">Pedometer</string>
+    <string name="pref_genPedoSrv_title">Background process</string>
+    <string name="pref_genPedoSrv_summary">Allow pedometer to run in background</string>
+    <string name="pref_genPedoSens_title">Sensitive</string>
+    <string name="pref_genPedoSens_summary">Middle</string>
+    <string name="pref_genOther_title">Others</string>
+    <string name="pref_genOtherNotif_title">Notification</string>
+    <string name="pref_genOtherNotif_summary">Notification</string>
+    <string name="pref_genOtherMusic_title">Music</string>
+    <string name="pref_genOtherMusic_summary">Music</string>
+    <string name="pref_genResetData_text">Reset Data</string>
+
+    <!-- Personal Information Preference -->
+    <string name="pref_pinfo_title">Personal Information</string>
+    <string name="pref_pinfo_summary">Set your personal information for more functions</string>
+    <string name="pref_pinfoPers_title">Personal</string>
+    <string name="pref_pinfoPersHeight_title">Height</string>
+    <string name="pref_pinfoPersHeight_summary">Please input your height (cm)</string>
+    <string name="pref_pinfoPersWeight_title">Weight</string>
+    <string name="pref_pinfoPersWeight_summary">Please input your weight (kg)</string>
+    <string name="pref_pinfoPersStepLength_title">Step Length</string>
+    <string name="pref_pinfoPersStepLength_summary">Please input your step length (cm)</string>
+    <string name="pref_pinfoMons_title">Monster</string>
+
+    <!-- About Us Preference -->
+    //login ID//
+    <string name="facebook_app_id">442376969294550</string>
+</resources>

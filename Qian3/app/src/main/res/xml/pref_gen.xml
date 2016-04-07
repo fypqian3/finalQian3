@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/pref_genPedo_title">
+        <SwitchPreference
+            android:key="pref_genPedoSrv"
+            android:title="@string/pref_genPedoSrv_title"
+            android:summary="@string/pref_genPedoSrv_summary"
+            android:defaultValue="false" />
+        <fyp.qian3.lib.pref.SeekBarPreference
+            android:key="pref_genPedoSens"
+            android:title="@string/pref_genPedoSens_title"
+            android:max="20"
+            android:defaultValue="10" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_genOther_title">
+        <SwitchPreference
+            android:key="pref_genOtherNotif"
+            android:title="@string/pref_genOtherNotif_title"
+            android:summary="@string/pref_genOtherNotif_summary"
+            android:defaultValue="false" />
+        <SwitchPreference
+            android:key="pref_genOtherMusic"
+            android:title="@string/pref_genOtherMusic_title"
+            android:summary="@string/pref_genOtherMusic_summary"
+            android:defaultValue="false" />
+    </PreferenceCategory>
+    <PreferenceCategory>
+        <!-- TODO: Reset Button (button text: @string/pref_genResetData_text) -->
+    </PreferenceCategory>
+</PreferenceScreen>
