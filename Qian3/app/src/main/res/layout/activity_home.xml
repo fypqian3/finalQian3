@@ -4,13 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-<<<<<<< HEAD
     tools:context=".ui.HomeAct">
-=======
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".ui.HomeAct"
-    tools:showIn="@layout/app_bar_drawer">
->>>>>>> parent of e043dd8... ryan change sth
 
     <LinearLayout
         android:id="@+id/Outest_layout"
@@ -120,7 +114,7 @@
                 android:src="@drawable/footprint" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/tvHomeCurrStep"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"

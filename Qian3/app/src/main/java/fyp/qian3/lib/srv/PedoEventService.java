@@ -20,6 +20,7 @@ public class PedoEventService extends Service {
 
     private static int CURR_STEP;
     private static final String TAG = "Qian3_Service";
+
     private PedoEvent mPedoEvent;
 
     // Database to store values
@@ -43,9 +44,6 @@ public class PedoEventService extends Service {
         Log.d(TAG, "Srv onCreate()");
 
         SrvFlag = true;
-
-        mPedoEvent = new PedoEvent(new onPedoEventListener() {
-        });
 
         // Load setting & data
         srvLoadData();
@@ -97,7 +95,7 @@ public class PedoEventService extends Service {
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mSensorManager.registerListener(mPedoEventListener,
                 mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-                mSensorManager.SENSOR_DELAY_NORMAL);
+                SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     /**
@@ -129,10 +127,10 @@ public class PedoEventService extends Service {
                 // While clearing recent app (swipe out), service will restart (why?) and step counter will reset
                 //  To resume from unexpected clearing, save current steps while current step is changed
                 SharedPreferences.Editor sharedPrefsEditor = sharedPrefs.edit();
-                sharedPrefsEditor.putInt("temp_currSteps", getCurrStep());
+                sharedPrefsEditor.putInt("temp_currSteps", CURR_STEP);
                 sharedPrefsEditor.commit();
 
-                callChangeListener();
+                mPedoEvent.callChangeListener();
             }
 
             prevY = y;
@@ -157,18 +155,16 @@ public class PedoEventService extends Service {
         public PedoEventService getService() {
             return PedoEventService.this;
         }
-    }
+        public void reloadSrvSetting(Context context) {
+            setSensitive(PreferenceManager.getDefaultSharedPreferences(context).getInt("pref_genPedoSens", 10));
+        }
 
-    public boolean getSrvState() {
-        return SrvFlag;
-    }
-
-    public void reloadSrvSetting(Context context) {
-        setSensitive(PreferenceManager.getDefaultSharedPreferences(context).getInt("pref_genPedoSens", 10));
-    }
-
-    public static int getCurrStep() {
-        return CURR_STEP;
+        public void setPedoEvent(PedoEvent pe) {
+            mPedoEvent = pe;
+        }
+        public int getCurrStep() {
+            return CURR_STEP;
+        }
     }
 
 }

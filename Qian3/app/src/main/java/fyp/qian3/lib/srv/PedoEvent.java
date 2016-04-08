@@ -1,19 +1,22 @@
 package fyp.qian3.lib.srv;
 
 public class PedoEvent {
-
     // Parameters for PedoEventListener
     private onPedoEventListener mOnPedoEventListener;
 
-    public PedoEvent() {
-        this.mOnPedoEventListener = null;
+    public interface onPedoEventListener {
+        void onPedoDetected();
+    }
+
+    public PedoEvent(onPedoEventListener listener) {
+        this.mOnPedoEventListener = listener;
     }
 
     public void setOnPedoEventListener(onPedoEventListener listener) {
         mOnPedoEventListener = listener;
     }
 
-    protected void callChangeListener() {
+    public void callChangeListener() {
         if (mOnPedoEventListener != null) {
             mOnPedoEventListener.onPedoDetected();
         }

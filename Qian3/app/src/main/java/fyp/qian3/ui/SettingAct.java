@@ -1,8 +1,12 @@
 package fyp.qian3.ui;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
@@ -15,10 +19,38 @@ import fyp.qian3.R;
 import fyp.qian3.lib.srv.PedoEventService;
 
 public class SettingAct extends PreferenceActivity {
+
+    boolean mPedoSrvBound = false;
+    PedoEventService.PedoSrvBinder mPedoSrvBinder;
+    ServiceConnection mConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            mPedoSrvBinder = (PedoEventService.PedoSrvBinder) service;
+            mPedoSrvBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            mPedoSrvBound = false;
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //getFragmentManager().beginTransaction().replace(android.R.id.content, new MyPreferenceFragment()).commit();
+        bindService(new Intent(this, PedoEventService.class), mConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Reload service setting when SettingAct is destroyed
+        mPedoSrvBinder.reloadSrvSetting(getApplication());
+        // Unbind from the service
+        if (mPedoSrvBound) {
+            unbindService(mConnection);
+            mPedoSrvBound = false;
+        }
     }
 
     @Override
@@ -49,20 +81,12 @@ public class SettingAct extends PreferenceActivity {
         }
 
         @Override
-        public void onDestroy() {
-            super.onDestroy();
-            // Reload Service Setting
-            //PedoEvent.PedoEventService.reloadSrvSetting(getActivity());
-        }
-
-        @Override
         public boolean onPreferenceChange(Preference pref, Object newValue) {
             Log.v("GeneralPref", "GeneralPref Changed");
             Log.v("Key_GeneralPref", pref.getKey());
             switch (pref.getKey()) {
                 case "pref_genPedoSrv":
                     if ((boolean) newValue) {
-                        // Is it a correct method to start service?
                         getActivity().startService(new Intent(getActivity(),  PedoEventService.class));
                     } else {
                         getActivity().stopService(new Intent(getActivity(),  PedoEventService.class));

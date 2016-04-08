@@ -43,15 +43,6 @@
             android:name=".ui.SocialAct"
             android:screenOrientation="portrait"
             android:label="@string/social_act" />
-
-        <activity
-            android:name=".ui.PersonAct"
-            android:label="@string/person_act"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.StatsAct"
-            android:label="@string/stats_act"
-            android:screenOrientation="portrait" />
         <activity android:name="com.facebook.FacebookActivity"
             android:configChanges=
                 "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
