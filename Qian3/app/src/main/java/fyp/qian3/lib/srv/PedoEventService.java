@@ -18,40 +18,26 @@ import android.util.Log;
 
 public class PedoEventService extends Service {
 
-    private static int CURR_STEP;
     private static final String TAG = "Qian3_Service";
-
-    private PedoEvent mPedoEvent;
+    // Binder given to clients
+    private final IBinder mBinder = new PedoSrvBinder();
 
     // Database to store values
     //private Database db;
 
-    // Binder given to clients
-    private final IBinder mBinder = new PedoSrvBinder();
-    // Sensor event listener
-    private XPedoEventListener mPedoEventListener;
+    // Sensor event
     private SensorManager mSensorManager;
+    private PedoEventDetector mPedoEventDetector;
 
     // Indicates if service is on or off
     private boolean SrvFlag = false;
-
-    SharedPreferences sharedPrefs;
-    private int threshold;
 
     @Override
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "Srv onCreate()");
 
-        SrvFlag = true;
-
-        // Load setting & data
-        srvLoadData();
-        srvLoadSetting();
-
-        // Sensor monitor
-        mPedoEventListener = new XPedoEventListener(this);
-        enableAcceMeterListener();
+        init();
     }
 
     @Override
@@ -60,10 +46,9 @@ public class PedoEventService extends Service {
         Log.d(TAG, "Srv onDestroy()");
 
         SrvFlag = false;
-        if (mPedoEventListener != null) {
-            mSensorManager.unregisterListener(mPedoEventListener);
+        if (mPedoEventDetector != null) {
+            mSensorManager.unregisterListener(mPedoEventDetector);
         }
-        // TODO: Save result to local storage
     }
 
     @Override
@@ -73,97 +58,52 @@ public class PedoEventService extends Service {
         return mBinder;
     }
 
-    /**
-     * Description:     Load settings and data  from shared preference
-     */
-
-    private void srvLoadData() {
-        // Load from temp data since service is shut down when recent active app list is cleared
-        sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-        CURR_STEP = sharedPrefs.getInt("temp_currSteps", 0);
+    @Override
+    public boolean onUnbind(Intent intent) {
+        // Set mPedoEvent to null
+        mPedoEventDetector.setPedoEvent(null);
+        return false;
     }
 
-    private void srvLoadSetting() {
-        setSensitive(sharedPrefs.getInt("pref_genPedoSens", 10));
+    /***** Initialization *****/
+    private void init() {
+        SrvFlag = true;
+
+        mPedoEventDetector = new PedoEventDetector(this);
+        //PedoEventDetector.CURRENT_SETP = sharedPrefs.getInt("temp_currSteps", 0);
+        //setSensitive(sharedPrefs.getInt("pref_genPedoSens", 3));
+
+        // Sensor monitor
+        registerListener();
     }
 
-    /**
-     * Description:     To enable accelerometer listener
-     */
-    private void enableAcceMeterListener() {
+    /***** To enable accelerometer listener *****/
+    private void registerListener() {
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        mSensorManager.registerListener(mPedoEventListener,
+        mSensorManager.registerListener(mPedoEventDetector,
                 mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_NORMAL);
     }
 
-    /**
-     * Description:     An inner class for override event listener.
-     */
-    private class XPedoEventListener implements SensorEventListener {
-        // Temporal Data
-        private float prevY;
-        private float currY;
+    //TODO: How to trigger client's event when step detected??? Also, if mPedoEvent == null, dont' trigger.
 
-        private XPedoEventListener(Context context) {
-            super();
-        }
-
-        /**
-         * Description:     Sensor event listener. Change algorithm of detecting steps here
-         */
-        @Override
-        public void onSensorChanged(SensorEvent event) {
-            float x = event.values[0];
-            float y = event.values[1];
-            float z = event.values[2];
-
-            currY = y;
-
-            if (Math.abs(currY - prevY) > threshold) {
-                CURR_STEP++;
-
-                // While clearing recent app (swipe out), service will restart (why?) and step counter will reset
-                //  To resume from unexpected clearing, save current steps while current step is changed
-                SharedPreferences.Editor sharedPrefsEditor = sharedPrefs.edit();
-                sharedPrefsEditor.putInt("temp_currSteps", CURR_STEP);
-                sharedPrefsEditor.commit();
-
-                mPedoEvent.callChangeListener();
-            }
-
-            prevY = y;
-        }
-
-        @Override
-        public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-        }
-    }
-
-    private void setSensitive(int newValue) {
-        // Smallest value of newValue = 0, but smallest value of threshold = 1, so +1
-        threshold = newValue + 1;
-    }
-
-
-    /**
-     * Description:     Used for client Binder.
-     */
+    /***** Clients' methods *****/
     public class PedoSrvBinder extends Binder {
         public PedoEventService getService() {
             return PedoEventService.this;
         }
-        public void reloadSrvSetting(Context context) {
-            setSensitive(PreferenceManager.getDefaultSharedPreferences(context).getInt("pref_genPedoSens", 10));
+        public void reloadServiceSetting() {
+            mPedoEventDetector.reloadDetectorSetting();
         }
 
         public void setPedoEvent(PedoEvent pe) {
-            mPedoEvent = pe;
+            mPedoEventDetector.setPedoEvent(pe);
         }
         public int getCurrStep() {
-            return CURR_STEP;
+            return PedoEventDetector.CURRENT_SETP;
+        }
+        public void reset() {
+            mPedoEventDetector.setCurrentSetp(0);
         }
     }
 

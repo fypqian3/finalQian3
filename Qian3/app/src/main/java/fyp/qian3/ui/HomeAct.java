@@ -97,6 +97,7 @@ public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
                 mPedoSrvBinder = (PedoEventService.PedoSrvBinder) service;
                 // Pass current ui  PedoEvent to the service so that  onPedoDetected() could be triggered.
                 mPedoSrvBinder.setPedoEvent(mPedoEvent);
+                tvCurrStep.setText(String.valueOf(mPedoSrvBinder.getCurrStep()));
             }
 
             @Override

@@ -20,9 +20,10 @@ import fyp.qian3.lib.srv.PedoEventService;
 
 public class SettingAct extends PreferenceActivity {
 
-    boolean mPedoSrvBound = false;
-    PedoEventService.PedoSrvBinder mPedoSrvBinder;
-    ServiceConnection mConnection = new ServiceConnection() {
+    // For service connection
+    private boolean mPedoSrvBound = false;
+    private PedoEventService.PedoSrvBinder mPedoSrvBinder;
+    private ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
             mPedoSrvBinder = (PedoEventService.PedoSrvBinder) service;
@@ -35,9 +36,11 @@ public class SettingAct extends PreferenceActivity {
         }
     };
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         bindService(new Intent(this, PedoEventService.class), mConnection, Context.BIND_AUTO_CREATE);
     }
 
@@ -45,7 +48,7 @@ public class SettingAct extends PreferenceActivity {
     protected void onDestroy() {
         super.onDestroy();
         // Reload service setting when SettingAct is destroyed
-        mPedoSrvBinder.reloadSrvSetting(getApplication());
+        mPedoSrvBinder.reloadServiceSetting();
         // Unbind from the service
         if (mPedoSrvBound) {
             unbindService(mConnection);
