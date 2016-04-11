@@ -70,8 +70,6 @@ public class PedoEventService extends Service {
         SrvFlag = true;
 
         mPedoEventDetector = new PedoEventDetector(this);
-        //PedoEventDetector.CURRENT_SETP = sharedPrefs.getInt("temp_currSteps", 0);
-        //setSensitive(sharedPrefs.getInt("pref_genPedoSens", 3));
 
         // Sensor monitor
         registerListener();
@@ -84,8 +82,6 @@ public class PedoEventService extends Service {
                 mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_NORMAL);
     }
-
-    //TODO: How to trigger client's event when step detected??? Also, if mPedoEvent == null, dont' trigger.
 
     /***** Clients' methods *****/
     public class PedoSrvBinder extends Binder {
@@ -100,10 +96,10 @@ public class PedoEventService extends Service {
             mPedoEventDetector.setPedoEvent(pe);
         }
         public int getCurrStep() {
-            return PedoEventDetector.CURRENT_SETP;
+            return mPedoEventDetector.getCurrentStep();
         }
         public void reset() {
-            mPedoEventDetector.setCurrentSetp(0);
+            mPedoEventDetector.setCurrentStep(0);
         }
     }
 

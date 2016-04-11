@@ -12,8 +12,8 @@ import android.util.Log;
 
 public class PedoEventDetector implements SensorEventListener {
 
-    public static int CURRENT_SETP;
-    public static float SENSITIVITY = 0;
+    private static int CURRENT_SETP;
+    private static float SENSITIVITY;
 
     private float mLastValues[] = new float[3 * 2];
     private float mScale[] = new float[2];
@@ -53,24 +53,21 @@ public class PedoEventDetector implements SensorEventListener {
         SENSITIVITY = 10 - (float) (sens+1)/10;
     }
 
-    public void setCurrentSetp(int step) {
+    public void setCurrentStep(int step) {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putInt("temp_curr_steps", step);
         editor.commit();
         CURRENT_SETP = step;
     }
 
+    public int getCurrentStep() {
+        return CURRENT_SETP;
+    }
+
     public void reloadDetectorSetting() {
         setSensitivity(mSharedPreferences.getInt("pref_genPedoSens", 69));
     }
 
-    // public void setSensitivity(float sensitivity) {
-    // SENSITIVITY = sensitivity; // 1.97 2.96 4.44 6.66 10.00 15.00 22.50
-    // // 33.75
-    // // 50.62
-    // }
-
-    // public void onSensorChanged(int sensor, float[] values) {
     @Override
     public void onSensorChanged(SensorEvent event) {
         // Log.i(Constant.STEP_SERVER, "StepDetector");
@@ -135,7 +132,6 @@ public class PedoEventDetector implements SensorEventListener {
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        // TODO Auto-generated method stub
     }
 
 }
