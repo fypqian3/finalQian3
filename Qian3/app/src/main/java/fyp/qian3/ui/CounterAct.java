@@ -5,10 +5,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.SharedPreferences;
-import android.os.IBinder;
-import android.preference.PreferenceManager;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -18,24 +16,28 @@ import fyp.qian3.R;
 import fyp.qian3.lib.srv.PedoEvent;
 import fyp.qian3.lib.srv.PedoEventService;
 
-public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
+public class CounterAct extends Activity implements PedoEvent.onPedoEventListener {
 
+    // For service
     boolean mPedoSrvBound;
-    SharedPreferences sharedPrefs;
     PedoEvent mPedoEvent;
     ServiceConnection mConnection;
-    // Binder is used to call service function
+    // Call service's method wherever you want
     PedoEventService.PedoSrvBinder mPedoSrvBinder;
 
-    Button btnSetting;
-    Button btnCounter;
-    TextView tvCurrStep;
+    // For self counting
+    private int stepCount = 0;
+    private boolean countFlag = false;
+
+    Button btnStartPause;
+    Button btnStop;
+    TextView tvStepCount;
+    TextView tvTimeCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-
+        setContentView(R.layout.activity_counter);
         init();
     }
 
@@ -49,7 +51,6 @@ public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
     @Override
     protected void onStop() {
         super.onStop();
-
         // Unbind from the service
         if (mPedoSrvBound) {
             unbindService(mConnection);
@@ -58,44 +59,50 @@ public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
     public void onPedoDetected() {
         if (mPedoSrvBound) {
-            tvCurrStep.setText(String.valueOf(mPedoSrvBinder.getCurrStep()));
+            if (countFlag) {
+                stepCount++;
+                tvStepCount.setText(String.valueOf(stepCount));
+            }
         } else {
-            Log.e("HomeAct", "Error: Service not bound!");
+            Log.e("CounterAct", "Error: Service not bound!");
         }
     }
 
     private void init() {
         /***** Link View Resources *****/
-        btnSetting = (Button) findViewById(R.id.btnHomeSetting);
-        btnSetting.setOnClickListener(new View.OnClickListener() {
+        btnStartPause = (Button) findViewById(R.id.btnCounterStartPause);
+        btnStartPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(HomeAct.this, fyp.qian3.ui.SettingAct.class));
+                if (countFlag) {
+                    btnStartPause.setText(getResources().getString(R.string.counter_btnStartPause_start));
+                    countFlag = false;
+                } else {
+                    btnStartPause.setText(getResources().getString(R.string.counter_btnStartPause_pause));
+                    countFlag = true;
+                }
             }
         });
-        btnCounter = (Button) findViewById(R.id.btnHomeCounter);
-        btnCounter.setOnClickListener(new View.OnClickListener() {
+        btnStop = (Button) findViewById(R.id.btnCounterStop);
+        btnStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(HomeAct.this, fyp.qian3.ui.CounterAct.class));
+                btnStartPause.setText(getResources().getString(R.string.counter_btnStartPause_start));
+                countFlag = false;
+                stepCount = 0;
+                tvStepCount.setText(String.valueOf(stepCount));
             }
         });
 
-        tvCurrStep = (TextView) findViewById(R.id.tvHomeCurrStep);
+        tvStepCount = (TextView) findViewById(R.id.tvCounterStepCount);
+        tvTimeCount = (TextView) findViewById(R.id.tvCounterTimeCount);
 
         /***** Set Parameters *****/
         // For determine whether current activity is connecting to service or not
         mPedoSrvBound = false;
-        // Get shared preference
-        sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        // Define  PedoEvent for PedoEventListener, so that onPedoDetected() could work correctly
+        // Define PedoEvent for PedoEventListener, so that onPedoDetected() could work correctly
         mPedoEvent = new PedoEvent(this);
         // Defines callbacks for service binding, passed to bindService()
         mConnection = new ServiceConnection() {
@@ -103,20 +110,22 @@ public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
             public void onServiceConnected(ComponentName className, IBinder service) {
                 mPedoSrvBound = true;
                 mPedoSrvBinder = (PedoEventService.PedoSrvBinder) service;
-                // Pass current ui  PedoEvent to the service so that  onPedoDetected() could be triggered.
+                // Pass current ui's PedoEvent to the service so that onPedoDetected() could be triggered.
                 mPedoSrvBinder.setPedoEvent(mPedoEvent);
-                tvCurrStep.setText(String.valueOf(mPedoSrvBinder.getCurrStep()));
+                // TODO: What you want to do when you connect to service (one time)
+
+
             }
 
             @Override
             public void onServiceDisconnected(ComponentName arg0) {
                 mPedoSrvBound = false;
+                // TODO: What you want to do when you disconnect (one time)
+
+
             }
         };
 
-        /***** Synchronize Settings *****/
-        if (sharedPrefs.getBoolean("pref_genPedoSrv", false)) {
-            startService(new Intent(HomeAct.this, fyp.qian3.lib.srv.PedoEventService.class));
-        }
     }
+
 }

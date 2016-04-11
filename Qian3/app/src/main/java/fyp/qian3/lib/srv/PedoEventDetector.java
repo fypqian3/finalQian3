@@ -107,6 +107,15 @@ public class PedoEventDetector implements SensorEventListener {
                                     CURRENT_SETP++;
                                     mLastMatch = extType;
                                     start = end;
+
+                                    // Step Detected
+                                    if (mPedoEvent != null) {
+                                        mPedoEvent.callChangeListener();
+                                    }
+
+                                    SharedPreferences.Editor editor = mSharedPreferences.edit();
+                                    editor.putInt("temp_curr_steps", CURRENT_SETP);
+                                    editor.commit();
                                 }
                             } else {
                                 mLastMatch = -1;
@@ -117,13 +126,6 @@ public class PedoEventDetector implements SensorEventListener {
                     mLastDirections[k] = direction;
                     mLastValues[k] = v;
 
-                    if (mPedoEvent != null) {
-                        mPedoEvent.callChangeListener();
-                    }
-
-                    SharedPreferences.Editor editor = mSharedPreferences.edit();
-                    editor.putInt("temp_curr_steps", CURRENT_SETP);
-                    editor.commit();
 
                 }
             }

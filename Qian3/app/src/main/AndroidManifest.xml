@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="fyp.qian3">
-<uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,8 +12,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.GuideAct"
-            android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,8 +22,8 @@
         </activity>
         <activity
             android:name=".ui.LoginAct"
-            android:screenOrientation="portrait"
-            android:label="@string/login_act" />
+            android:label="@string/login_act"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.HomeAct"
             android:label="@string/home_act"
@@ -29,28 +31,32 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.SettingAct"
-            android:screenOrientation="portrait"
-            android:label="@string/setting_act" />
+            android:label="@string/setting_act"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.PersonAct"
-            android:screenOrientation="portrait"
-            android:label="@string/person_act" />
+            android:label="@string/person_act"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.StatsAct"
-            android:screenOrientation="portrait"
-            android:label="@string/stats_act" />
+            android:label="@string/stats_act"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.SocialAct"
-            android:screenOrientation="portrait"
-            android:label="@string/social_act" />
-        <activity android:name="com.facebook.FacebookActivity"
-            android:configChanges=
-                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:label="@string/app_name" />
+            android:label="@string/social_act"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.CounterAct"
+            android:label="@string/counter_act"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
-
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
 
         <service
             android:name=".lib.srv.PedoEventService"
