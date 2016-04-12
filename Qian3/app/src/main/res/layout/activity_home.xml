@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:background="#6e6d6d"
+        android:background="@drawable/bg_color_gradient"
         android:orientation="vertical">
 
         <LinearLayout
@@ -45,16 +45,6 @@
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
-
-                <DatePicker
-                    android:id="@+id/datePicker"
-                    android:layout_width="230dp"
-                    android:layout_height="86dp"
-                    android:layout_gravity="center_horizontal"
-                    android:calendarTextColor="#0c0a0a"
-                    android:datePickerMode="calendar"
-                    android:backgroundTint="#ffffff"
-                    android:spinnersShown="true" />
 
             </LinearLayout>
 
@@ -107,7 +97,8 @@
                 android:layout_height="match_parent"
                 android:paddingLeft="10dp"
                 android:soundEffectsEnabled="false"
-                android:src="@drawable/footprint" />
+                android:src="@drawable/footprint"
+                android:paddingRight="10dp" />
 
             <TextView
                 android:id="@+id/tvHomeCurrStep"
