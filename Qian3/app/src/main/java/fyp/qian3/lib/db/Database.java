@@ -83,9 +83,9 @@ public class Database extends SQLiteOpenHelper {
 
     //insert  a new row
     //not get current date
-    public void setDate( int steps){
+    public void setDate(Calendar date, int steps){
         getWritableDatabase().beginTransaction();
-        Calendar date = Calendar.getInstance();
+        //Calendar date = Calendar.getInstance();
 
 
         int month = date.get(Calendar.MONTH) + 1;

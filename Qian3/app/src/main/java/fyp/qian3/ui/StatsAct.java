@@ -71,7 +71,7 @@ public class StatsAct extends Activity {
 
         //test
         Calendar c = Calendar.getInstance();
-        db.setDate(100);
+        db.setDate(c, 100);
 
 
         Calendar fromDay = Calendar.getInstance();
