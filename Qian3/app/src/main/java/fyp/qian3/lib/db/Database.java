@@ -11,7 +11,7 @@ import java.util.Calendar;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Created by user on 6/4/2016.
+ * Created by user on 11/4/2016.
  */
 public class Database extends SQLiteOpenHelper {
 
@@ -83,9 +83,11 @@ public class Database extends SQLiteOpenHelper {
 
     //insert  a new row
     //not get current date
-    public void setDate(Calendar date, int steps){
+    public void setDate( int steps){
         getWritableDatabase().beginTransaction();
-        //date = Calendar.getInstance();
+        Calendar date = Calendar.getInstance();
+
+
         int month = date.get(Calendar.MONTH) + 1;
         int dates = date.get(Calendar.DATE);
         int dbDate = month * 100 + dates;
@@ -113,7 +115,7 @@ public class Database extends SQLiteOpenHelper {
     }
 
     public int getWeekOrMonthStep(Calendar start, Calendar end){
-       // start = Calendar.getInstance();
+        // start = Calendar.getInstance();
         //end = Calendar.getInstance();
         int month = start.get(Calendar.MONTH) + 1;
         int dates = start.get(Calendar.DATE);
@@ -143,6 +145,17 @@ public class Database extends SQLiteOpenHelper {
         int day = date % 100;
 
         Pair<Integer, Integer> p = new Pair<Integer, Integer>( month, day);
+        return p;
+    }
+
+    //Get the highest record
+    public Pair<Integer, Integer> getRecordData() {
+        Cursor c = getReadableDatabase()
+                .query(DB_NAME, new String[]{"date, steps"}, "date > 0", null, null, null,
+                        "steps DESC", "1");
+        c.moveToFirst();
+        Pair<Integer, Integer> p = new Pair<Integer, Integer>(c.getInt(0), c.getInt(1));
+        c.close();
         return p;
     }
    /* public void insertNewDay(long date, int steps) {
