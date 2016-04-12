@@ -65,24 +65,24 @@ public class StatsAct extends Activity {
 
         int stepFromToday = mPedoSrvBinder.getCurrStep();
 
-        Database db = Database.getInstance(this);
+       // Database db = Database.getInstance(this);
 
 
 
         //test
-        Calendar c = Calendar.getInstance();
+      /*  Calendar c = Calendar.getInstance();
         db.setDate(c, 100);
 
 
         Calendar fromDay = Calendar.getInstance();
         fromDay.add(Calendar.DATE, -6);
-        Calendar endDay = Calendar.getInstance();
+        Calendar endDay = Calendar.getInstance();*/
 
 
-        // int a = 11;
+        int a = 11;
 
-        // record.setText(String.valueOf(a));
-       int daysThisMonth = endDay.get(Calendar.DAY_OF_MONTH);
+        record.setText(String.valueOf(a));
+      /* int daysThisMonth = endDay.get(Calendar.DAY_OF_MONTH);
 
         int thisWeek = db.getWeekOrMonthStep(fromDay, endDay) + stepFromToday;
 
@@ -105,14 +105,14 @@ public class StatsAct extends Activity {
         totalThisMonth.setText(String.valueOf(thisMonth) + " steps");
 
         averageThisWeek.setText(String.valueOf(thisWeek/7) + " steps");
-        averageThisMonth.setText(String.valueOf(thisMonth / daysThisMonth) + " steps");
+        averageThisMonth.setText(String.valueOf(thisMonth / daysThisMonth) + " steps");*/
 
-        db.close();
-
-
+     //   db.close();
 
 
-        barChart();
+
+
+      //  barChart();
 
 
     }

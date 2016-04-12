@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import fyp.qian3.R;
@@ -30,7 +31,7 @@ public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
     Button btnSetting;
     Button btnCounter;
     TextView tvCurrStep;
-
+    ImageButton stat;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +45,8 @@ public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
         super.onStart();
         // Bind with the service
         bindService(new Intent(this, PedoEventService.class), mConnection, Context.BIND_AUTO_CREATE);
+
+
     }
 
     @Override
@@ -89,6 +92,14 @@ public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
         });
 
         tvCurrStep = (TextView) findViewById(R.id.tvHomeCurrStep);
+
+        stat = (ImageButton) findViewById(R.id.statistic);
+        stat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HomeAct.this, fyp.qian3.ui.StatsAct.class));
+            }
+        });
 
         /***** Set Parameters *****/
         // For determine whether current activity is connecting to service or not
