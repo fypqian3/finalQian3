@@ -13,11 +13,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+
 
 import fyp.qian3.R;
 import fyp.qian3.lib.srv.PedoEvent;
 import fyp.qian3.lib.srv.PedoEventService;
+
+import java.util.Calendar;
 
 public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
 
@@ -31,7 +37,11 @@ public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
     Button btnSetting;
     Button btnCounter;
     TextView tvCurrStep;
+    TextView tvWeekDay;
+    TextView tvDate;
     ImageButton stat;
+    ImageView ivMonster;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +84,49 @@ public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
         }
     }
 
+    //new add to show today date
+    private void setDate() {
+        Calendar mCalendar = Calendar.getInstance();
+        int weekDay = mCalendar.get(Calendar.DAY_OF_WEEK);
+        int month = mCalendar.get(Calendar.MONTH) + 1;
+        int day = mCalendar.get(Calendar.DAY_OF_MONTH);
+
+        tvDate.setText(month + getString(R.string.month) + day
+                + getString(R.string.day));
+
+        String week_day_str = new String();
+        switch (weekDay) {
+            case Calendar.SUNDAY:
+                week_day_str = getString(R.string.sunday);
+                break;
+
+            case Calendar.MONDAY:
+                week_day_str = getString(R.string.monday);
+                break;
+
+            case Calendar.TUESDAY:
+                week_day_str = getString(R.string.tuesday);
+                break;
+
+            case Calendar.WEDNESDAY:
+                week_day_str = getString(R.string.wednesday);
+                break;
+
+            case Calendar.THURSDAY:
+                week_day_str = getString(R.string.thursday);
+                break;
+
+            case Calendar.FRIDAY:
+                week_day_str = getString(R.string.friday);
+                break;
+
+            case Calendar.SATURDAY:
+                week_day_str = getString(R.string.saturday);
+                break;
+        }
+        tvWeekDay.setText(week_day_str);
+    }
+
     private void init() {
         /***** Link View Resources *****/
         btnSetting = (Button) findViewById(R.id.btnHomeSetting);
@@ -81,8 +134,11 @@ public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(HomeAct.this, fyp.qian3.ui.SettingAct.class));
+
             }
+
         });
+
         btnCounter = (Button) findViewById(R.id.btnHomeCounter);
         btnCounter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +148,8 @@ public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
         });
 
         tvCurrStep = (TextView) findViewById(R.id.tvHomeCurrStep);
+        tvWeekDay = (TextView) findViewById(R.id.tvWeekDay);
+        tvDate = (TextView) findViewById(R.id.tvDate);
 
         stat = (ImageButton) findViewById(R.id.statistic);
         stat.setOnClickListener(new View.OnClickListener() {
@@ -129,5 +187,23 @@ public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
         if (sharedPrefs.getBoolean("pref_genPedoSrv", false)) {
             startService(new Intent(HomeAct.this, fyp.qian3.lib.srv.PedoEventService.class));
         }
+
+        //set the date
+        setDate();
+        ivMonster = (ImageView) findViewById(R.id.monster);
+        ivMonster.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //TranslateAnimation(float x1, float x2, float y1, float y2)
+                Animation am = new TranslateAnimation(0.0f, 0f, 0.0f, -120.0f);
+                //setDuration (long durationMillis)
+                am.setDuration(400);
+                //setRepeatCount (int repeatCount)
+                am.setRepeatCount(4);
+                //start jumping
+                ivMonster.startAnimation(am);
+            }
+        });
     }
 }
