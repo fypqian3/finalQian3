@@ -6,15 +6,6 @@
 
     tools:context="fyp.qian3.ui.LoginAct">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Login"
-        android:id="@+id/btnLoginLogin"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="137dp" />
-
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -25,23 +16,35 @@
 
 
         <ImageView
-            android:layout_width="130dp"
-            android:layout_height="130dp"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
             android:id="@+id/imageView4"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/monsterone" />
+            android:background="@drawable/monsterone"
+            android:layout_weight="1" />
         <ImageView
-            android:layout_width="140dp"
-            android:layout_height="140dp"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
             android:id="@+id/imageView5"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/monstertwo" />
+            android:background="@drawable/monstertwo"
+            android:layout_weight="1" />
         <ImageView
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
             android:id="@+id/imageView6"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/monsterthree" />
+            android:background="@drawable/monsterthree"
+            android:layout_weight="1" />
     </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:id="@+id/btnLoginLogin"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="137dp" />
 
 </RelativeLayout>
