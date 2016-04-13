@@ -148,8 +148,8 @@ public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
         });
 
         tvCurrStep = (TextView) findViewById(R.id.tvHomeCurrStep);
-        tvWeekDay = (TextView) findViewById(R.id.tvWeekDay);
-        tvDate = (TextView) findViewById(R.id.tvDate);
+        tvWeekDay = (TextView) findViewById(R.id.tvHomeWeekDay);
+        tvDate = (TextView) findViewById(R.id.tvHomeDate);
 
         stat = (ImageButton) findViewById(R.id.statistic);
         stat.setOnClickListener(new View.OnClickListener() {
@@ -190,7 +190,7 @@ public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
 
         //set the date
         setDate();
-        ivMonster = (ImageView) findViewById(R.id.monster);
+        ivMonster = (ImageView) findViewById(R.id.homeMonster);
         ivMonster.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
