@@ -27,6 +27,7 @@ public class PedoEventDetector implements SensorEventListener {
     private int mLastMatch = -1;
 
     private PedoEvent mPedoEvent;
+    private PedoEvent mPedoEventForSrv;
 
     private Context mContext;
     SharedPreferences mSharedPreferences;
@@ -42,11 +43,14 @@ public class PedoEventDetector implements SensorEventListener {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         setSensitivity(mSharedPreferences.getInt("pref_genPedoSens", 69));
         // Load from temp data since service is shut down when recent active app list is cleared
-        CURRENT_SETP = mSharedPreferences.getInt("temp_curr_steps", 0);
+        CURRENT_SETP = mSharedPreferences.getInt("data_currSteps", 0);
     }
 
     public void setPedoEvent(PedoEvent pe) {
         mPedoEvent = pe;
+    }
+    public void setPedoEventForSrv(PedoEvent pe) {
+        mPedoEventForSrv = pe;
     }
 
     public void setSensitivity(int sens) {
@@ -55,7 +59,7 @@ public class PedoEventDetector implements SensorEventListener {
 
     public void setCurrentStep(int step) {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putInt("temp_curr_steps", step);
+        editor.putInt("data_currSteps", step);
         editor.commit();
         CURRENT_SETP = step;
     }
@@ -109,12 +113,13 @@ public class PedoEventDetector implements SensorEventListener {
                                     start = end;
 
                                     // Step Detected
+                                    mPedoEventForSrv.callChangeListener();
                                     if (mPedoEvent != null) {
                                         mPedoEvent.callChangeListener();
                                     }
 
                                     SharedPreferences.Editor editor = mSharedPreferences.edit();
-                                    editor.putInt("temp_curr_steps", CURRENT_SETP);
+                                    editor.putInt("data_currSteps", CURRENT_SETP);
                                     editor.commit();
                                 }
                             } else {

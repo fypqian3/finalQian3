@@ -14,6 +14,9 @@
     <string name="counter_btnStartPause_pause">Pause</string>
     <string name="counter_btnStop_stop">Stop</string>
 
+    <!-- Notification -->
+    <string name="notif_title">Progress</string>
+
     <!-- Preference -->
     <!-- General Preference -->
     <string name="pref_gen_title">General</string>

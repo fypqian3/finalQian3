@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +29,15 @@ public class CounterAct extends Activity implements PedoEvent.onPedoEventListene
     // For self counting
     private int stepCount = 0;
     private boolean countFlag = false;
+    /*
+    private final Runnable timeCount = new Runnable() {
+        @Override
+        public void run() {
+            long time = SystemClock.currentThreadTimeMillis();
+            long timeMS = time%1000;
+        }
+    };
+    */
 
     Button btnStartPause;
     Button btnStop;
