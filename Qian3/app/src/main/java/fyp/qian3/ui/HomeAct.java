@@ -39,6 +39,8 @@ public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
     TextView tvCurrStep;
     TextView tvWeekDay;
     TextView tvDate;
+    TextView calories;
+    TextView distance;
     ImageButton stat;
     ImageView ivMonster;
 
@@ -86,42 +88,43 @@ public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
 
     //new add to show today date
     private void setDate() {
+        //calendar for getting today date and weekdad
         Calendar mCalendar = Calendar.getInstance();
         int weekDay = mCalendar.get(Calendar.DAY_OF_WEEK);
         int month = mCalendar.get(Calendar.MONTH) + 1;
         int day = mCalendar.get(Calendar.DAY_OF_MONTH);
+        int year= mCalendar.get(Calendar.YEAR);
 
-        tvDate.setText(month + getString(R.string.month) + day
-                + getString(R.string.day));
 
+        tvDate.setText(day + " / "+ month + " / " + year);
         String week_day_str = new String();
         switch (weekDay) {
             case Calendar.SUNDAY:
-                week_day_str = getString(R.string.sunday);
+                week_day_str = getString(R.string.home_sunday);
                 break;
 
             case Calendar.MONDAY:
-                week_day_str = getString(R.string.monday);
+                week_day_str = getString(R.string.home_monday);
                 break;
 
             case Calendar.TUESDAY:
-                week_day_str = getString(R.string.tuesday);
+                week_day_str = getString(R.string.home_tuesday);
                 break;
 
             case Calendar.WEDNESDAY:
-                week_day_str = getString(R.string.wednesday);
+                week_day_str = getString(R.string.home_wednesday);
                 break;
 
             case Calendar.THURSDAY:
-                week_day_str = getString(R.string.thursday);
+                week_day_str = getString(R.string.home_thursday);
                 break;
 
             case Calendar.FRIDAY:
-                week_day_str = getString(R.string.friday);
+                week_day_str = getString(R.string.home_friday);
                 break;
 
             case Calendar.SATURDAY:
-                week_day_str = getString(R.string.saturday);
+                week_day_str = getString(R.string.home_saturday);
                 break;
         }
         tvWeekDay.setText(week_day_str);

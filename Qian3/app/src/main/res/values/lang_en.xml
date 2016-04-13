@@ -14,6 +14,21 @@
     <string name="counter_btnStartPause_pause">Pause</string>
     <string name="counter_btnStop_stop">Stop</string>
 
+    <!-- Home Activity -->
+    <string name="home_sunday">Sunday</string>
+    <string name="home_monday">Monday</string>
+    <string name="home_tuesday">Tuesday</string>
+    <string name="home_wednesday">Wednesday</string>
+    <string name="home_thursday">Thursday</string>
+    <string name="home_friday">Friday</string>
+    <string name="home_saturday">Saturday</string>
+    <string name="home_month">month\t</string>
+    <string name="home_day">day</string>
+    <string name="home_calories">calories burned</string>
+    <string name="home_distance">distance walked</string>
+
+    <!-- Guide Activity -->
+    <string name="guide_introduction">This is a mobile step counter help you to counter your steps.</string>
     <!-- Preference -->
     <!-- General Preference -->
     <string name="pref_gen_title">General</string>
