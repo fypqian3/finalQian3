@@ -88,11 +88,11 @@ public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
     public void onPedoDetected() {
         if (mPedoSrvBound) {
             tvCurrStep.setText(String.valueOf(mPedoSrvBinder.getCurrStep()));
+            calories.setText(String.valueOf(mPedoSrvBinder.getCurrStep()));
         } else {
             Log.e("HomeAct", "Error: Service not bound!");
         }
     }
-
     //new add to show today date
     private void setDate() {
         //calendar for getting today date and weekdad
@@ -161,10 +161,11 @@ public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
 
         tvWeekDay = (TextView) findViewById(R.id.tvHomeWeekDay);
         tvDate = (TextView) findViewById(R.id.tvHomeDate);
+        calories = (TextView) findViewById(R.id.tvCalories);
         pcStep = (PieChart) findViewById(R.id.piechart);
 
         // slice for the steps taken today
-        sliceCurrent = new PieModel("Current Steps", 5, Color.parseColor("#99CC00"));
+        sliceCurrent = new PieModel("Current Steps", 0, Color.parseColor("#99CC00"));
         pcStep.addPieSlice(sliceCurrent);
 
         // slice for the "missing" steps until reaching the goal
@@ -204,6 +205,8 @@ public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
                 // Pass current ui  PedoEvent to the service so that  onPedoDetected() could be triggered.
                 mPedoSrvBinder.setPedoEvent(mPedoEvent);
                 tvCurrStep.setText(String.valueOf(mPedoSrvBinder.getCurrStep()));
+                calories.setText(String.valueOf(mPedoSrvBinder.getCurrStep()));
+               // updatePie(mPedoSrvBinder.getCurrStep(), 10);
             }
 
             @Override
@@ -234,5 +237,17 @@ public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
                 ivMonster.startAnimation(am);
             }
         });
+    }
+    //udatePie function
+    private void updatePie(int currStep, int targetStep){
+        sliceCurrent.setValue(currStep);
+
+        if(targetStep - currStep > 0)
+        {
+            if (pcStep.getData().size() == 1){
+                pcStep.addPieSlice(sliceGoal);
+            }
+            sliceGoal.setValue(targetStep - currStep);
+        }
     }
 }
