@@ -193,7 +193,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="140dp"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/monstertwo" />
+                    android:src="@drawable/ml" />
 
 
             </LinearLayout>
