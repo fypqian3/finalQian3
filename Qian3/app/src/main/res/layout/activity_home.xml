@@ -144,7 +144,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Today's date"
-                    android:id="@+id/tvDate"
+                    android:id="@+id/tvHomeDate"
                     android:layout_gravity="right"
                     android:textColor="#ffffff"
                     android:textSize="35dp"
@@ -155,7 +155,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Weekday"
-                    android:id="@+id/tvWeekDay"
+                    android:id="@+id/tvHomeWeekDay"
                     android:layout_gravity="center_horizontal"
                     android:textColor="#ffffff"
                     android:textSize="35dp"
@@ -187,7 +187,7 @@
                     android:layout_gravity="center_horizontal" />
 
                 <ImageView
-                    android:id="@+id/monster"
+                    android:id="@+id/homeMonster"
                     android:layout_width="match_parent"
                     android:layout_height="140dp"
                     android:layout_gravity="center_horizontal"
