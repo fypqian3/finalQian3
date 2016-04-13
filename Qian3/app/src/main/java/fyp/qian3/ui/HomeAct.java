@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.os.Bundle;
@@ -18,6 +19,9 @@ import android.widget.TextView;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 
+
+import org.eazegraph.lib.charts.PieChart;
+import org.eazegraph.lib.models.PieModel;
 
 import fyp.qian3.R;
 import fyp.qian3.lib.srv.PedoEvent;
@@ -41,6 +45,9 @@ public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
     TextView tvDate;
     ImageButton stat;
     ImageView ivMonster;
+    //Ryan
+    PieModel sliceGoal, sliceCurrent;
+    PieChart pcStep;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,7 +157,21 @@ public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
         tvCurrStep = (TextView) findViewById(R.id.tvHomeCurrStep);
         tvWeekDay = (TextView) findViewById(R.id.tvWeekDay);
         tvDate = (TextView) findViewById(R.id.tvDate);
+        pcStep = (PieChart) findViewById(R.id.piechart);
 
+        // slice for the steps taken today
+        sliceCurrent = new PieModel("Current Steps", 5, Color.parseColor("#99CC00"));
+        pcStep.addPieSlice(sliceCurrent);
+
+        // slice for the "missing" steps until reaching the goal
+        //assume is 10
+        sliceGoal = new PieModel("Steps remained", 10 , Color.parseColor("#CC0000"));
+        pcStep.addPieSlice(sliceGoal);
+
+        pcStep.setUsePieRotation(true);
+        pcStep.startAnimation();
+
+        //Ryan testing
         stat = (ImageButton) findViewById(R.id.statistic);
         stat.setOnClickListener(new View.OnClickListener() {
             @Override

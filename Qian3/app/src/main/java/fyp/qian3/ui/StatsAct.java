@@ -43,6 +43,7 @@ public class StatsAct extends Activity {
 
 
 
+
         mConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName className, IBinder service) {
@@ -54,6 +55,10 @@ public class StatsAct extends Activity {
                 mPedoSrvBound = false;
             }
         };
+
+        int a = 11;
+
+        record.setText(String.valueOf(a));
     }
 
     @Override
@@ -79,9 +84,7 @@ public class StatsAct extends Activity {
         Calendar endDay = Calendar.getInstance();*/
 
 
-        int a = 11;
 
-        record.setText(String.valueOf(a));
       /* int daysThisMonth = endDay.get(Calendar.DAY_OF_MONTH);
 
         int thisWeek = db.getWeekOrMonthStep(fromDay, endDay) + stepFromToday;

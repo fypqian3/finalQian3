@@ -181,9 +181,9 @@
                     android:id="@+id/piechart"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
-                    app:egLegendTextSize="18sp"
+                    app:egLegendTextSize="10sp"
                     app:egUsePieRotation="true"
-                    app:egValueTextSize="36sp"
+                    app:egValueTextSize="15sp"
                     android:layout_gravity="center_horizontal" />
 
                 <ImageView
