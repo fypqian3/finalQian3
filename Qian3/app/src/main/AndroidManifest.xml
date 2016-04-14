@@ -63,6 +63,14 @@
             android:enabled="true"
             android:exported="true" />
 
+        <receiver
+            android:name=".lib.srv.PedoEventReceiver">
+            <intent-filter>
+                <action android:name="first_remind" />
+                <action android:name="second_remind" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

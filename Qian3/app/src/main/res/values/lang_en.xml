@@ -13,6 +13,8 @@
     <string name="notif_title">Progress</string>
     <string name="notif_FGctTitle">Step Progress</string>
     <string name="notif_FGctText_HasFinished">% has finished!</string>
+    <string name="notif_BGctTitle_general">Qian3 Reminder</string>
+    <string name="notif_BGctText_general">% has finished! Keep going!</string>
 
     <!-- Home Activity -->
     <string name="home_sunday">Sunday</string>

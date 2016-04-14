@@ -2,6 +2,7 @@ package fyp.qian3.lib.srv;
 
 // Static parameters for PedoEventService
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -33,8 +34,10 @@ public class PedoEventService extends Service implements PedoEvent.onPedoEventLi
 
     // Database to store values
     private Database mDatabase;
-
     private SharedPreferences mSharedPreferences;
+
+    // Broadcast receiver
+    private PedoEventReceiver mPedoEventReceiver;
 
     // Sensor event
     private PedoEvent mPedoEventForSrv;
@@ -70,17 +73,20 @@ public class PedoEventService extends Service implements PedoEvent.onPedoEventLi
         if (mPedoEventDetector != null) {
             mSensorManager.unregisterListener(mPedoEventDetector);
         }
+        updateDatabase();
+        mPedoEventReceiver.unRegisterAlarm();
     }
 
     @Override
     public IBinder onBind(Intent intent) {
         Log.d(TAG, "Srv onBind()");
+        updateDatabase();
         return mBinder;
     }
 
     @Override
     public boolean onUnbind(Intent intent) {
-        // Set mPedoEvent to null
+        // Set mPedoEvent to null, no activity is using onPedoDetected() method
         mPedoEventDetector.setPedoEvent(null);
         return false;
     }
@@ -91,7 +97,7 @@ public class PedoEventService extends Service implements PedoEvent.onPedoEventLi
             onFGNotificationChanged();
             mFGNotificationMgr.notify(mFGNotifyID, mFGNotificationBuilder.build());
         }
-        updateDatabase();
+        //updateDatabase();
     }
 
 
@@ -100,6 +106,9 @@ public class PedoEventService extends Service implements PedoEvent.onPedoEventLi
         SrvFlag = true;
         mDatabase = Database.getInstance(this);
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplication());
+
+        // Broadcast receiver
+        mPedoEventReceiver = new PedoEventReceiver();
 
         mPedoEventDetector = new PedoEventDetector(this);
         mPedoEventForSrv = new PedoEvent(this);
@@ -114,15 +123,28 @@ public class PedoEventService extends Service implements PedoEvent.onPedoEventLi
 
         CURR_DATE = mSharedPreferences.getInt("data_currDate", 0);
 
+        // If data_currDate does not exist ( == 0 ), load date from system
         if (CURR_DATE == 0) {
             CURR_DATE = mDatabase.cvtCalendarToID(Calendar.getInstance());
             mSharedPreferences.edit().putInt("data_currDate", CURR_DATE).commit();
+        } else if (CURR_DATE != mDatabase.cvtCalendarToID(Calendar.getInstance())) {
+            // Else check if CURR_DATE is same as system date, if not, save current steps into database with old date
+            // and start with new record of steps
+            onDateChanged();
         }
+
+        mPedoEventReceiver.registerAlarm(this);
 
     }
 
     private void updateDatabase() {
         mDatabase.setSteps(CURR_DATE, mPedoEventDetector.getCurrentStep());
+    }
+
+    private void onDateChanged() {
+        updateDatabase();
+        CURR_DATE = mDatabase.cvtCalendarToID(Calendar.getInstance());
+        mPedoEventDetector.setCurrentStep(0);
     }
 
     private void setFGNotification() {

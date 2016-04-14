@@ -44,7 +44,10 @@ public class Database extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(final SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + DB_NAME + " (" + DATE + " INTEGER, " + STEPS + " INTEGER)");
+        db.execSQL(
+                "CREATE TABLE " + DB_NAME +
+                " (" + DATE + " INTEGER, " + STEPS + " INTEGER)"
+        );
     }
 
     @Override
@@ -57,40 +60,6 @@ public class Database extends SQLiteOpenHelper {
         int m = date.get(Calendar.MONTH) + 1;
         int d = date.get(Calendar.DATE);
         return y*10000 + m*100 + d;
-    }
-
-    public DatabaseItem setSteps(Calendar date, int steps) {
-        return setSteps(cvtCalendarToID(date), steps);
-    }
-
-    public DatabaseItem setSteps(int id, int steps) {
-        DatabaseItem dbi = new DatabaseItem(id, steps);
-        if (!update(dbi)) {
-            insert(dbi);
-        }
-        //replace(dbi);
-        Log.i("Database", "Input: " + String.valueOf(steps) + " " + String.valueOf(id));
-        Log.i("Database", "getSteps: " + String.valueOf(getSteps(id)));
-        Log.i("Database", "getMultiDatabaseItem: " + String.valueOf(getMultiDatabaseItem(id, 1)[0].steps) + " " + String.valueOf(getMultiDatabaseItem(id, 1)[0].getMonth())
-        + String.valueOf(getMultiDatabaseItem(id, 1)[0].getDay()));
-        return dbi;
-    }
-
-    public int getSteps(Calendar date) {
-        return getSteps(cvtCalendarToID(date));
-    }
-
-    public int getSteps(int id) {
-        int steps = 0;
-        String where = DATE + "=" + String.valueOf(id);
-        Cursor cursor = getReadableDatabase().query(
-                DB_NAME, null, where, null, null, null, null, null
-        );
-        if (cursor.moveToFirst()) {
-            steps = cursor.getInt(1);
-        }
-        cursor.close();
-        return steps;
     }
 
     private DatabaseItem insert(DatabaseItem dbItem) {
@@ -121,18 +90,62 @@ public class Database extends SQLiteOpenHelper {
         getWritableDatabase().replace(DB_NAME, null, cv);
     }
 
+    public DatabaseItem setSteps(Calendar date, int steps) {
+        return setSteps(cvtCalendarToID(date), steps);
+    }
+
+    public DatabaseItem setSteps(int id, int steps) {
+        DatabaseItem dbi = new DatabaseItem(id, steps);
+        if (!update(dbi)) {
+            insert(dbi);
+        }
+        //replace(dbi);
+        Log.i("Database", "Input: " + String.valueOf(steps) + " " + String.valueOf(id));
+        Log.i("Database", "getSteps: " + String.valueOf(getSteps(id)));
+        Log.i("Database", "getDatabaseItem: " + String.valueOf(getDatabaseItem(id, 1)[0].steps) + " " + String.valueOf(getDatabaseItem(id, 1)[0].getMonth())
+                + String.valueOf(getDatabaseItem(id, 1)[0].getDay()));
+        return dbi;
+    }
+
     /**
-    * @param startID       Start date represented by id
-    * @param number     Amount of days that you want to get (Pass 1 means get the data of start date only)
+     * @param date       Date represented by id
+     * @return Steps
+     */
+    public int getSteps(Calendar date) {
+        return getSteps(cvtCalendarToID(date));
+    }
+
+    /**
+     * @param id       Date represented by Calendar
+     * @return Steps
+     */
+    public int getSteps(int id) {
+        int steps = 0;
+        String where = DATE + "=" + String.valueOf(id);
+        Cursor cursor = getReadableDatabase().query(
+                DB_NAME, null, where, null, null, null, null, null
+        );
+        if (cursor.moveToFirst()) {
+            steps = cursor.getInt(1);
+        }
+        cursor.close();
+        return steps;
+    }
+
+    /**
+     * @param endID       End date represented by id
+     * @param number     Amount of days that you want to get (Pass 1 means get the data of end date only,
+     *                                    2 means get the data of end date and the last date of end date, etc.)
     * @return DatabaseItem array
     */
-    public DatabaseItem[] getMultiDatabaseItem(int startID, int number) {
+    public DatabaseItem[] getDatabaseItem(int endID, int number) {
         // Index of dbarray
         int i = 0;
         DatabaseItem[] dbarray = new DatabaseItem[number];
 
         Cursor cursor = getReadableDatabase().query(
-                DB_NAME, null, DATE+" >= "+String.valueOf(startID), null, null, null, null, String.valueOf(number)
+                DB_NAME, null, DATE+" <= "+String.valueOf(endID),
+                null, null, null, DATE+" DESC", String.valueOf(number)
         );
 
         if (cursor.moveToNext()) {
@@ -143,40 +156,102 @@ public class Database extends SQLiteOpenHelper {
         }
         // If require date is not existed, return DatabaseItem(0, 0)
         for (; i<number; i++) {
-            dbarray[i] = new DatabaseItem(0, 0);
+            dbarray[i] = null;
         }
         cursor.close();
         return dbarray;
     }
 
     /**
-     * @param startID       Start date represented by id
-     * @param number     Amount of days that you want to get (Pass 1 means get the data of start date only)
+     * @param endC       End date represented by Calendar
+     * @param number     Amount of days that you want to get (Pass 1 means get the data of end date only,
+     *                                    2 means get the data of end date and the last date of end date, etc.)
+     * @return DatabaseItem array
+     */
+    public DatabaseItem[] getDatabaseItem(Calendar endC, int number) {
+        return getDatabaseItem(cvtCalendarToID(endC), number);
+    }
+
+    /**
+     * @param endID       End date represented by id
+     * @param number     Amount of days that you want to get (Pass 1 means get the data of end date only,
+     *                                    2 means get the data of end date and the last date of end date, etc.)
      * @return Sum of steps
      */
-    public int getStepsSum (int startID, int number) {
+    public int getStepSumWithNum(int endID, int number) {
         int stepSum = 0;
         Cursor cursor = getReadableDatabase().query(
-                DB_NAME, null, DATE+" >= "+String.valueOf(startID), null, null, null, null, String.valueOf(number)
+                DB_NAME, new String[]{"sum("+STEPS+")"}, DATE+" <= "+String.valueOf(endID),
+                null, null, null, DATE+" DESC", String.valueOf(number)
         );
         if (cursor.moveToFirst()) {
-            do {
-                stepSum += cursor.getInt(1);
-            } while (cursor.moveToNext());
+            stepSum = cursor.getInt(0);
         }
         cursor.close();
         return stepSum;
     }
 
-    //Get the highest record
-    public Pair<Integer, Integer> getRecordData() {
-        Cursor c = getReadableDatabase()
-                .query(DB_NAME, new String[]{"date, steps"}, "date > 0", null, null, null,
-                        "steps DESC", "1");
-        c.moveToFirst();
-        Pair<Integer, Integer> p = new Pair<Integer, Integer>(c.getInt(0), c.getInt(1));
-        c.close();
-        return p;
+    /**
+     * @param endC       End date represented by Calendar
+     * @param number     Amount of days that you want to get (Pass 1 means get the data of end date only,
+     *                                    2 means get the data of end date and the last date of end date, etc.)
+     * @return Sum of steps
+     */
+    public int getStepSumWithNum(Calendar endC, int number) {
+        return getStepSumWithNum(cvtCalendarToID(endC), number);
+    }
+
+    /**
+     * @param startID   Start date represented by id
+     * @param endID     End date represented by id
+     * @return Sum of steps
+     */
+    public int getStepSum(int startID, int endID) {
+        int stepSum = 0;
+        Cursor cursor = getReadableDatabase().query(
+                DB_NAME, new String[]{"sum("+STEPS+")"}, DATE+" >= ? AND "+DATE+" <= ?",
+                new String[]{String.valueOf(startID), String.valueOf(endID)}, null, null, null
+        );
+        if (cursor.moveToFirst()) {
+            stepSum = cursor.getInt(0);
+        }
+        cursor.close();
+        return stepSum;
+    }
+
+    /**
+     * @param startC   Start date represented by Calendar
+     * @param endC     End date represented by Calendar
+     * @return Sum of steps
+     */
+    public int getStepSum(Calendar startC, Calendar endC) {
+        return getStepSum(cvtCalendarToID(startC), cvtCalendarToID(endC));
+    }
+
+    /**
+     * @param number     Amount of days that you want to get
+     * @return DatabaseItem array
+     */
+    public DatabaseItem[] getMaxSteps(int number) {
+        // Index of dbarray
+        int i = 0;
+        DatabaseItem[] dbarray = new DatabaseItem[number];
+
+        Cursor cursor = getReadableDatabase().query(
+                DB_NAME, null, null, null, null, null, STEPS + " DESC", String.valueOf(number)
+        );
+        if (cursor.moveToFirst()) {
+            do {
+                dbarray[i] = new DatabaseItem(cursor.getInt(0), cursor.getInt(1));
+                i++;
+            } while (cursor.moveToNext());
+        }
+        // If require date is not existed, return DatabaseItem(0, 0)
+        for (; i<number; i++) {
+            dbarray[i] = null;
+        }
+        cursor.close();
+        return dbarray;
     }
 
 }
