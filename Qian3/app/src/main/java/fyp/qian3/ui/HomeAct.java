@@ -88,13 +88,7 @@ public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
     public void onPedoDetected() {
         if (mPedoSrvBound) {
             tvCurrStep.setText(String.valueOf(mPedoSrvBinder.getCurrStep()));
-
-            double weight = sharedPrefs.getInt("pref_pinfoPersWeight", 0);
-            double distances = sharedPrefs.getInt("pref_pinfoPersStepLength", 0)* mPedoSrvBinder.getCurrStep() * 0.00001;
-            double caloriesBuried = 47 * distances * weight / 60;
-            calories.setText(String.format("%.2f", caloriesBuried) + " cal");
-            distance.setText(String.format("%.2f", distances) + " km");
-            updatePie(mPedoSrvBinder.getCurrStep(),10000);
+            calories.setText(String.valueOf(mPedoSrvBinder.getCurrStep()));
         } else {
             Log.e("HomeAct", "Error: Service not bound!");
         }
@@ -168,7 +162,6 @@ public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
         tvWeekDay = (TextView) findViewById(R.id.tvHomeWeekDay);
         tvDate = (TextView) findViewById(R.id.tvHomeDate);
         calories = (TextView) findViewById(R.id.tvCalories);
-        distance = (TextView) findViewById(R.id.tvDistanceWalked);
         pcStep = (PieChart) findViewById(R.id.piechart);
 
         // slice for the steps taken today
@@ -212,9 +205,7 @@ public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
                 // Pass current ui  PedoEvent to the service so that  onPedoDetected() could be triggered.
                 mPedoSrvBinder.setPedoEvent(mPedoEvent);
                 tvCurrStep.setText(String.valueOf(mPedoSrvBinder.getCurrStep()));
-                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-                //calories.setText(String.valueOf(mPedoSrvBinder.getCurrStep()));
+                calories.setText(String.valueOf(mPedoSrvBinder.getCurrStep()));
                // updatePie(mPedoSrvBinder.getCurrStep(), 10);
             }
 
@@ -258,10 +249,5 @@ public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
             }
             sliceGoal.setValue(targetStep - currStep);
         }
-        else{
-            pcStep.clearChart();
-            pcStep.addPieSlice(sliceCurrent);
-        }
-        pcStep.update();
     }
 }
