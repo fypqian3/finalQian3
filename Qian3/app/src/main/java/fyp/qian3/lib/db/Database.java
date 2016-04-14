@@ -5,18 +5,20 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import android.util.Pair;
 
 import java.util.Calendar;
 import java.util.concurrent.atomic.AtomicInteger;
 
-/**
- * Created by user on 6/4/2016.
- */
 public class Database extends SQLiteOpenHelper {
 
-    private final static String DB_NAME = "steps";
-    private final static int DB_VERSION = 2;
+    private final static String DB_NAME = "steps_database";
+    private final static int DB_VERSION = 1;
+
+    // form field name
+    private static final String DATE = "date";
+    private static final String STEPS = "steps";
 
     private static Database instance;
     private static final AtomicInteger openCounter = new AtomicInteger();
@@ -42,140 +44,139 @@ public class Database extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(final SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + DB_NAME + " (date INTEGER, steps INTEGER)");
+        db.execSQL("CREATE TABLE " + DB_NAME + " (" + DATE + " INTEGER, " + STEPS + " INTEGER)");
     }
 
     @Override
     public void onUpgrade(final SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (oldVersion == 1) {
-            // drop PRIMARY KEY constraint
-            db.execSQL("CREATE TABLE " + DB_NAME + "2 (date INTEGER, steps INTEGER)");
-            db.execSQL("INSERT INTO " + DB_NAME + "2 (date, steps) SELECT date, steps FROM " +
-                    DB_NAME);
-            db.execSQL("DROP TABLE " + DB_NAME);
-            db.execSQL("ALTER TABLE " + DB_NAME + "2 RENAME TO " + DB_NAME + "");
+
+    }
+
+    public static int cvtCalendarToID (Calendar date) {
+        int y = date.get(Calendar.YEAR);
+        int m = date.get(Calendar.MONTH) + 1;
+        int d = date.get(Calendar.DATE);
+        return y*10000 + m*100 + d;
+    }
+
+    public DatabaseItem setSteps(Calendar date, int steps) {
+        return setSteps(cvtCalendarToID(date), steps);
+    }
+
+    public DatabaseItem setSteps(int id, int steps) {
+        DatabaseItem dbi = new DatabaseItem(id, steps);
+        if (!update(dbi)) {
+            insert(dbi);
         }
+        //replace(dbi);
+        Log.i("Database", "Input: " + String.valueOf(steps) + " " + String.valueOf(id));
+        Log.i("Database", "getSteps: " + String.valueOf(getSteps(id)));
+        Log.i("Database", "getMultiDatabaseItem: " + String.valueOf(getMultiDatabaseItem(id, 1)[0].steps) + " " + String.valueOf(getMultiDatabaseItem(id, 1)[0].getMonth())
+        + String.valueOf(getMultiDatabaseItem(id, 1)[0].getDay()));
+        return dbi;
+    }
+
+    public int getSteps(Calendar date) {
+        return getSteps(cvtCalendarToID(date));
+    }
+
+    public int getSteps(int id) {
+        int steps = 0;
+        String where = DATE + "=" + String.valueOf(id);
+        Cursor cursor = getReadableDatabase().query(
+                DB_NAME, null, where, null, null, null, null, null
+        );
+        if (cursor.moveToFirst()) {
+            steps = cursor.getInt(1);
+        }
+        cursor.close();
+        return steps;
+    }
+
+    private DatabaseItem insert(DatabaseItem dbItem) {
+        ContentValues cv = new ContentValues();
+        cv.put(DATE, dbItem.id);
+        cv.put(STEPS, dbItem.steps);
+        getWritableDatabase().insert(DB_NAME, null, cv);
+        return dbItem;
+    }
+
+    private boolean update(DatabaseItem dbItem) {
+        ContentValues cv = new ContentValues();
+        cv.put(DATE, dbItem.id);
+        cv.put(STEPS, dbItem.steps);
+        String where = DATE + "=" + String.valueOf(dbItem.id);
+        return getWritableDatabase().update(DB_NAME, cv, where, null) > 0;
+    }
+
+    private boolean delete(int id) {
+        String where = DATE + "=" + String.valueOf(id);
+        return getWritableDatabase().delete(DB_NAME, where, null) > 0;
+    }
+
+    private void replace(DatabaseItem dbItem) {
+        ContentValues cv = new ContentValues();
+        cv.put(DATE, dbItem.id);
+        cv.put(STEPS, dbItem.steps);
+        getWritableDatabase().replace(DB_NAME, null, cv);
     }
 
     /**
-     * Query the 'steps' table. Remember to close the cursor!
-     *
-     * @param columns       the colums
-     * @param selection     the selection
-     * @param selectionArgs the selction arguments
-     * @param groupBy       the group by statement
-     * @param having        the having statement
-     * @param orderBy       the order by statement
-     * @return the cursor
-     */
-    public Cursor query(final String[] columns, final String selection, final String[] selectionArgs, final String groupBy, final String having, final String orderBy, final String limit) {
-        return getReadableDatabase()
-                .query(DB_NAME, columns, selection, selectionArgs, groupBy, having, orderBy, limit);
-    }
+    * @param startID       Start date represented by id
+    * @param number     Amount of days that you want to get (Pass 1 means get the data of start date only)
+    * @return DatabaseItem array
+    */
+    public DatabaseItem[] getMultiDatabaseItem(int startID, int number) {
+        // Index of dbarray
+        int i = 0;
+        DatabaseItem[] dbarray = new DatabaseItem[number];
 
-    public void updateEverySteps(Calendar date, int steps) {
-        //date = Calendar.getInstance();
-        int month = date.get(Calendar.MONTH) + 1;
-        int dates = date.get(Calendar.DATE);
-        int dbDate = month * 100 + dates;
-        getWritableDatabase().execSQL("UPDATE " + DB_NAME + " SET steps = steps + " + steps + " WHERE date = " + dbDate);
-    }
+        Cursor cursor = getReadableDatabase().query(
+                DB_NAME, null, DATE+" >= "+String.valueOf(startID), null, null, null, null, String.valueOf(number)
+        );
 
-    //insert  a new row
-    //not get current date
-    public void setDate(Calendar date, int steps){
-        getWritableDatabase().beginTransaction();
-        //date = Calendar.getInstance();
-        int month = date.get(Calendar.MONTH) + 1;
-        int dates = date.get(Calendar.DATE);
-        int dbDate = month * 100 + dates;
-        ContentValues values = new ContentValues();
-        values.put("date", dbDate);
-        values.put("steps", steps);
-        getWritableDatabase().insert(DB_NAME, null, values);
-        getWritableDatabase().setTransactionSuccessful();
-        getWritableDatabase().endTransaction();
-    }
-
-    public int getDateStep(Calendar date){
-        //date = Calendar.getInstance();
-        int month = date.get(Calendar.MONTH) + 1;
-        int dates = date.get(Calendar.DATE);
-        int dbDate = month * 100 + dates;
-        Cursor c = getReadableDatabase().query(DB_NAME, new String[]{"steps"}, "date = ?",
-                new String[]{String.valueOf(dbDate)}, null, null, null);
-        c.moveToFirst();
-        int re;
-        if (c.getCount() == 0) re = Integer.MIN_VALUE;
-        else re = c.getInt(0);
-        c.close();
-        return re;
-    }
-
-    public int getWeekOrMonthStep(Calendar start, Calendar end){
-       // start = Calendar.getInstance();
-        //end = Calendar.getInstance();
-        int month = start.get(Calendar.MONTH) + 1;
-        int dates = start.get(Calendar.DATE);
-        int dbDate = month * 100 + dates;
-
-        int month1 = start.get(Calendar.MONTH) + 1;
-        int dates1 = start.get(Calendar.DATE);
-        int dbDate1 = month1 * 100 + dates1;
-
-        Cursor c = getReadableDatabase()
-                .query(DB_NAME, new String[]{"SUM(steps)"}, "date >= ? AND date <= ?",
-                        new String[]{String.valueOf(dbDate), String.valueOf(dbDate1)}, null, null, null);
-        int re;
-        if (c.getCount() == 0) {
-            re = 0;
-        } else {
-            c.moveToFirst();
-            re = c.getInt(0);
+        if (cursor.moveToNext()) {
+            do {
+                dbarray[i] = new DatabaseItem(cursor.getInt(0), cursor.getInt(1));
+                i++;
+            } while (cursor.moveToNext());
         }
-        c.close();
-        return re;
+        // If require date is not existed, return DatabaseItem(0, 0)
+        for (; i<number; i++) {
+            dbarray[i] = new DatabaseItem(0, 0);
+        }
+        cursor.close();
+        return dbarray;
     }
 
-    public Pair<Integer, Integer> getMonthDate(int date){
+    /**
+     * @param startID       Start date represented by id
+     * @param number     Amount of days that you want to get (Pass 1 means get the data of start date only)
+     * @return Sum of steps
+     */
+    public int getStepsSum (int startID, int number) {
+        int stepSum = 0;
+        Cursor cursor = getReadableDatabase().query(
+                DB_NAME, null, DATE+" >= "+String.valueOf(startID), null, null, null, null, String.valueOf(number)
+        );
+        if (cursor.moveToFirst()) {
+            do {
+                stepSum += cursor.getInt(1);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return stepSum;
+    }
 
-        int month = date / 100;
-        int day = date % 100;
-
-        Pair<Integer, Integer> p = new Pair<Integer, Integer>( month, day);
+    //Get the highest record
+    public Pair<Integer, Integer> getRecordData() {
+        Cursor c = getReadableDatabase()
+                .query(DB_NAME, new String[]{"date, steps"}, "date > 0", null, null, null,
+                        "steps DESC", "1");
+        c.moveToFirst();
+        Pair<Integer, Integer> p = new Pair<Integer, Integer>(c.getInt(0), c.getInt(1));
+        c.close();
         return p;
     }
-   /* public void insertNewDay(long date, int steps) {
-        getWritableDatabase().beginTransaction();
-        try {
-            Cursor c = getReadableDatabase().query(DB_NAME, new String[]{"date"}, "date = ?",
-                    new String[]{String.valueOf(date)}, null, null, null);
-            if (c.getCount() == 0 && steps >= 0) {
-                ContentValues values = new ContentValues();
-                values.put("date", date);
-                // use the negative steps as offset
-                values.put("steps", -steps);
-                getWritableDatabase().insert(DB_NAME, null, values);
-
-                // add 'steps' to yesterdays count
-
-            }
-            c.close();
-
-            getWritableDatabase().setTransactionSuccessful();
-        } finally {
-            getWritableDatabase().endTransaction();
-        }
-    }
-
-    public int getRecord() {
-        Cursor c = getReadableDatabase()
-                .query(DB_NAME, new String[]{"MAX(steps)"}, "date > 0", null, null, null, null);
-        c.moveToFirst();
-        int re = c.getInt(0);
-        c.close();
-        return re;
-    }*/
-
 
 }

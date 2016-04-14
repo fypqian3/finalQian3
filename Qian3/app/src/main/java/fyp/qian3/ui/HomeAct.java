@@ -6,17 +6,28 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+
+
+import org.eazegraph.lib.charts.PieChart;
+import org.eazegraph.lib.models.PieModel;
 
 import fyp.qian3.R;
 import fyp.qian3.lib.srv.PedoEvent;
 import fyp.qian3.lib.srv.PedoEventService;
+
+import java.util.Calendar;
 
 public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
 
@@ -30,6 +41,15 @@ public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
     Button btnSetting;
     Button btnCounter;
     TextView tvCurrStep;
+    TextView tvWeekDay;
+    TextView tvDate;
+    TextView calories;
+    TextView distance;
+    ImageButton stat;
+    ImageView ivMonster;
+    //Ryan
+    PieModel sliceGoal, sliceCurrent;
+    PieChart pcStep;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +64,8 @@ public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
         super.onStart();
         // Bind with the service
         bindService(new Intent(this, PedoEventService.class), mConnection, Context.BIND_AUTO_CREATE);
+
+
     }
 
     @Override
@@ -71,6 +93,50 @@ public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
         }
     }
 
+    //new add to show today date
+    private void setDate() {
+        //calendar for getting today date and weekdad
+        Calendar mCalendar = Calendar.getInstance();
+        int weekDay = mCalendar.get(Calendar.DAY_OF_WEEK);
+        int month = mCalendar.get(Calendar.MONTH) + 1;
+        int day = mCalendar.get(Calendar.DAY_OF_MONTH);
+        int year= mCalendar.get(Calendar.YEAR);
+
+
+        tvDate.setText(day + " / "+ month + " / " + year);
+        String week_day_str = new String();
+        switch (weekDay) {
+            case Calendar.SUNDAY:
+                week_day_str = getString(R.string.home_sunday);
+                break;
+
+            case Calendar.MONDAY:
+                week_day_str = getString(R.string.home_monday);
+                break;
+
+            case Calendar.TUESDAY:
+                week_day_str = getString(R.string.home_tuesday);
+                break;
+
+            case Calendar.WEDNESDAY:
+                week_day_str = getString(R.string.home_wednesday);
+                break;
+
+            case Calendar.THURSDAY:
+                week_day_str = getString(R.string.home_thursday);
+                break;
+
+            case Calendar.FRIDAY:
+                week_day_str = getString(R.string.home_friday);
+                break;
+
+            case Calendar.SATURDAY:
+                week_day_str = getString(R.string.home_saturday);
+                break;
+        }
+        tvWeekDay.setText(week_day_str);
+    }
+
     private void init() {
         /***** Link View Resources *****/
         btnSetting = (Button) findViewById(R.id.btnHomeSetting);
@@ -78,8 +144,11 @@ public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(HomeAct.this, fyp.qian3.ui.SettingAct.class));
+
             }
+
         });
+
         btnCounter = (Button) findViewById(R.id.btnHomeCounter);
         btnCounter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,6 +158,35 @@ public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
         });
 
         tvCurrStep = (TextView) findViewById(R.id.tvHomeCurrStep);
+
+        tvWeekDay = (TextView) findViewById(R.id.tvHomeWeekDay);
+        tvDate = (TextView) findViewById(R.id.tvHomeDate);
+        pcStep = (PieChart) findViewById(R.id.piechart);
+
+        // slice for the steps taken today
+        sliceCurrent = new PieModel("Current Steps", 5, Color.parseColor("#99CC00"));
+        pcStep.addPieSlice(sliceCurrent);
+
+        // slice for the "missing" steps until reaching the goal
+        //assume is 10
+        sliceGoal = new PieModel("Steps remained", 10 , Color.parseColor("#CC0000"));
+        pcStep.addPieSlice(sliceGoal);
+
+        pcStep.setUsePieRotation(true);
+        pcStep.startAnimation();
+
+        tvWeekDay = (TextView) findViewById(R.id.tvHomeWeekDay);
+        tvDate = (TextView) findViewById(R.id.tvHomeDate);
+
+
+        //Ryan testing
+        stat = (ImageButton) findViewById(R.id.statistic);
+        stat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HomeAct.this, fyp.qian3.ui.StatsAct.class));
+            }
+        });
 
         /***** Set Parameters *****/
         // For determine whether current activity is connecting to service or not
@@ -118,5 +216,23 @@ public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
         if (sharedPrefs.getBoolean("pref_genPedoSrv", false)) {
             startService(new Intent(HomeAct.this, fyp.qian3.lib.srv.PedoEventService.class));
         }
+
+        //set the date
+        setDate();
+        ivMonster = (ImageView) findViewById(R.id.homeMonster);
+        ivMonster.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //TranslateAnimation(float x1, float x2, float y1, float y2)
+                Animation am = new TranslateAnimation(0.0f, 0f, 0.0f, -120.0f);
+                //setDuration (long durationMillis)
+                am.setDuration(400);
+                //setRepeatCount (int repeatCount)
+                am.setRepeatCount(4);
+                //start jumping
+                ivMonster.startAnimation(am);
+            }
+        });
     }
 }

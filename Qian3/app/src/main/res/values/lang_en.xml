@@ -9,13 +9,31 @@
     <string name="social_act">Social</string>
     <string name="counter_act">Step Counter</string>
 
+    <!-- Notification -->
+    <string name="notif_title">Progress</string>
+    <string name="notif_FGctTitle">Step Progress</string>
+    <string name="notif_FGctText_HasFinished">% has finished!</string>
+
+    <!-- Home Activity -->
+    <string name="home_sunday">Sunday</string>
+    <string name="home_monday">Monday</string>
+    <string name="home_tuesday">Tuesday</string>
+    <string name="home_wednesday">Wednesday</string>
+    <string name="home_thursday">Thursday</string>
+    <string name="home_friday">Friday</string>
+    <string name="home_saturday">Saturday</string>
+    <string name="home_month">month\t</string>
+    <string name="home_day">day</string>
+    <string name="home_calories">calories burned</string>
+    <string name="home_distance">distance walked</string>
+
+    <!-- Guide Activity -->
+    <string name="guide_introduction">This is a mobile step counter help you to counter your steps.</string>
+
     <!-- Counter Activity -->
     <string name="counter_btnStartPause_start">Start</string>
     <string name="counter_btnStartPause_pause">Pause</string>
     <string name="counter_btnStop_stop">Stop</string>
-
-    <!-- Notification -->
-    <string name="notif_title">Progress</string>
 
     <!-- Preference -->
     <!-- General Preference -->
@@ -27,8 +45,8 @@
     <string name="pref_genPedoSens_title">Sensitive</string>
     <string name="pref_genPedoSens_summary">Middle</string>
     <string name="pref_genOther_title">Others</string>
-    <string name="pref_genOtherNotif_title">Notification</string>
-    <string name="pref_genOtherNotif_summary">Notification</string>
+    <string name="pref_genOtherNotif_title">Foreground Notification</string>
+    <string name="pref_genOtherNotif_summary">Show your progress in notification bar</string>
     <string name="pref_genOtherMusic_title">Music</string>
     <string name="pref_genOtherMusic_summary">Music</string>
     <string name="pref_genResetData_text">Reset Data</string>

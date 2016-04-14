@@ -21,8 +21,8 @@ import fyp.qian3.lib.srv.PedoEventService;
 public class SettingAct extends PreferenceActivity {
 
     // For service connection
-    private boolean mPedoSrvBound = false;
-    private PedoEventService.PedoSrvBinder mPedoSrvBinder;
+    private static boolean mPedoSrvBound = false;
+    private static PedoEventService.PedoSrvBinder mPedoSrvBinder;
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
@@ -48,7 +48,7 @@ public class SettingAct extends PreferenceActivity {
     protected void onDestroy() {
         super.onDestroy();
         // Reload service setting when SettingAct is destroyed
-        mPedoSrvBinder.reloadServiceSetting();
+        mPedoSrvBinder.reloadSrvSensitive();
         // Unbind from the service
         if (mPedoSrvBound) {
             unbindService(mConnection);
@@ -81,6 +81,8 @@ public class SettingAct extends PreferenceActivity {
             pref_genPedoSrv.setOnPreferenceChangeListener(this);
             Preference pref_genPedoSens = findPreference("pref_genPedoSens");
             pref_genPedoSens.setOnPreferenceChangeListener(this);
+            Preference pref_genOtherNotif = findPreference("pref_genOtherNotif");
+            pref_genOtherNotif.setOnPreferenceChangeListener(this);
         }
 
         @Override
@@ -106,6 +108,15 @@ public class SettingAct extends PreferenceActivity {
                                             pref.setSummary("Low");
                                         }
                                         */
+                    break;
+                case "pref_genOtherNotif":
+                    if (mPedoSrvBound) {
+                        if ((boolean) newValue) {
+                            mPedoSrvBinder.showFGNotification();
+                        } else {
+                            mPedoSrvBinder.hideFGNotification();
+                        }
+                    }
                     break;
             }
             return true;

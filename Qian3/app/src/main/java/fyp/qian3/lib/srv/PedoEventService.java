@@ -9,29 +9,32 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Binder;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import java.util.Calendar;
+
 import fyp.qian3.R;
+import fyp.qian3.lib.db.Database;
+import fyp.qian3.ui.HomeAct;
 
 
 public class PedoEventService extends Service implements PedoEvent.onPedoEventListener {
 
-    private static int TARGET = 10000;
-
     private static final String TAG = "Qian3_Service";
+    private static int CURR_DATE;
+
     // Binder given to clients
     private final IBinder mBinder = new PedoSrvBinder();
 
     // Database to store values
-    //private Database db;
+    private Database mDatabase;
+
+    private SharedPreferences mSharedPreferences;
 
     // Sensor event
     private PedoEvent mPedoEventForSrv;
@@ -39,10 +42,13 @@ public class PedoEventService extends Service implements PedoEvent.onPedoEventLi
     private PedoEventDetector mPedoEventDetector;
 
     // Notification
-    final int notifyID = 1; // 通知的識別號碼
-    private Notification mForeGroundNotification;
-    NotificationManager mNotificationManager;
-    Notification.Builder mBuilder;
+    // Foreground Notification
+    private final int mFGNotifyID = 1;
+    private NotificationManager mFGNotificationMgr;
+    private Notification.Builder mFGNotificationBuilder;
+    private int FGNProgressMax;
+    // Background Notification
+
 
     // Indicates if service is on or off
     private boolean SrvFlag = false;
@@ -69,8 +75,6 @@ public class PedoEventService extends Service implements PedoEvent.onPedoEventLi
     @Override
     public IBinder onBind(Intent intent) {
         Log.d(TAG, "Srv onBind()");
-
-        setNotifBar(intent);
         return mBinder;
     }
 
@@ -83,52 +87,80 @@ public class PedoEventService extends Service implements PedoEvent.onPedoEventLi
 
     @Override
     public void onPedoDetected() {
-        if (mBuilder!=null) {
-            int progressMax = TARGET; // 進度條的最大值，通常都是設為100。若是設為0，且indeterminate為false的話，表示不使用進度條
-            int progress = mPedoEventDetector.getCurrentStep(); // 進度值
-            mBuilder.setContentText(String.valueOf(progress) + "/" + String.valueOf(progressMax) + "  " + String.valueOf(progress * 100 / progressMax) + "% has finished!");
-            mForeGroundNotification = mBuilder.build(); // 建立通知
-            mNotificationManager.notify(notifyID, mForeGroundNotification); // 發送通知
+        if (mFGNotificationBuilder !=null) {
+            onFGNotificationChanged();
+            mFGNotificationMgr.notify(mFGNotifyID, mFGNotificationBuilder.build());
         }
+        updateDatabase();
     }
 
 
-    /***** Initialization *****/
+    // Initialization
     private void init() {
         SrvFlag = true;
+        mDatabase = Database.getInstance(this);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplication());
 
         mPedoEventDetector = new PedoEventDetector(this);
         mPedoEventForSrv = new PedoEvent(this);
         mPedoEventDetector.setPedoEventForSrv(mPedoEventForSrv);
         // Sensor monitor
         registerListener();
+
+        if (mSharedPreferences.getBoolean("pref_genOtherNotif", false)) {
+            setFGNotification();
+            mFGNotificationMgr.notify(mFGNotifyID, mFGNotificationBuilder.build());
+        }
+
+        CURR_DATE = mSharedPreferences.getInt("data_currDate", 0);
+
+        if (CURR_DATE == 0) {
+            CURR_DATE = mDatabase.cvtCalendarToID(Calendar.getInstance());
+            mSharedPreferences.edit().putInt("data_currDate", CURR_DATE).commit();
+        }
+
     }
 
-    private void setNotifBar(Intent intent) {
+    private void updateDatabase() {
+        mDatabase.setSteps(CURR_DATE, mPedoEventDetector.getCurrentStep());
+    }
 
+    private void setFGNotification() {
         // Progress bar setting
-        int progressMax = TARGET; // 進度條的最大值，通常都是設為100。若是設為0，且indeterminate為false的話，表示不使用進度條
-        int progress = mPedoEventDetector.getCurrentStep(); // 進度值
-        final boolean indeterminate = false; // 是否為不確定的進度，如果不確定的話，進度條將不會明確顯示目前的進度。若是設為false，且progressMax為0的話，表示不使用進度條
+        FGNProgressMax = mSharedPreferences.getInt("data_goalSteps", 8000);
 
-        final int requestCode = notifyID; // PendingIntent的Request Code
+        final int requestCode = mFGNotifyID;
         final int flags = PendingIntent.FLAG_CANCEL_CURRENT;
-        final PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), requestCode, intent, flags); // 取得PendingIntent
+        // When foreground notification clicked, go to HomeAct
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                getApplicationContext(), requestCode, new Intent(this, HomeAct.class), flags);
 
-        mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE); // 取得系統的通知服務
-        mBuilder = new Notification.Builder(getApplicationContext())
+        mFGNotificationMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mFGNotificationBuilder = new Notification.Builder(getApplicationContext())
                 .setSmallIcon(R.drawable.ic_srv_notif)
-                .setContentTitle("Step Progress")
-                .setContentText(String.valueOf(progress) + "/" + String.valueOf(progressMax) + "  " + String.valueOf(progress * 100 / progressMax) + "% has finished!")
-                .setProgress(progressMax, progress, indeterminate)
-                .setContentIntent(PendingIntent.getActivity(getApplicationContext(), requestCode, intent, flags))
-                .setAutoCancel(true)
+                .setContentTitle(getResources().getString(R.string.notif_FGctTitle))
+                .setContentIntent(pendingIntent)
+                //.setAutoCancel(true)
                 .setOngoing(true);
-        mForeGroundNotification = mBuilder.build(); // 建立通知
-        mNotificationManager.notify(notifyID, mForeGroundNotification); // 發送通知
+
+        // setContentText and setProgress
+        onFGNotificationChanged();
     }
 
-    /***** To enable accelerometer listener *****/
+    private void onFGNotificationChanged() {
+        mFGNotificationBuilder
+                .setContentText(
+                        String.valueOf(mPedoEventDetector.getCurrentStep() * 100 / FGNProgressMax)
+                        + getResources().getString(R.string.notif_FGctText_HasFinished)
+                        + "  ["
+                        + String.valueOf(mPedoEventDetector.getCurrentStep())
+                        + "/"
+                        + String.valueOf(FGNProgressMax)
+                        + "]")
+                .setProgress(FGNProgressMax, mPedoEventDetector.getCurrentStep(), false);
+    }
+
+    // To enable accelerometer listener
     private void registerListener() {
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mSensorManager.registerListener(mPedoEventDetector,
@@ -141,8 +173,22 @@ public class PedoEventService extends Service implements PedoEvent.onPedoEventLi
         public PedoEventService getService() {
             return PedoEventService.this;
         }
-        public void reloadServiceSetting() {
-            mPedoEventDetector.reloadDetectorSetting();
+        public void reloadSrvSensitive() {
+            mPedoEventDetector.reloadDetectorSensitive();
+        }
+        public void reloadSrvGoalSteps() {
+            FGNProgressMax = mSharedPreferences.getInt("data_goalSteps", 8000);
+            onFGNotificationChanged();
+        }
+        public void showFGNotification() {
+            if (mFGNotificationBuilder == null) {
+                setFGNotification();
+            }
+                mFGNotificationMgr.notify(mFGNotifyID, mFGNotificationBuilder.build());
+        }
+        public void hideFGNotification() {
+            mFGNotificationMgr.cancel(mFGNotifyID);
+            mFGNotificationBuilder = null;
         }
 
         public void setPedoEvent(PedoEvent pe) {

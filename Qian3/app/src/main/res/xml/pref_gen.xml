@@ -9,7 +9,7 @@
         <fyp.qian3.lib.pref.SeekBarPreference
             android:key="pref_genPedoSens"
             android:title="@string/pref_genPedoSens_title"
-            android:max="99"
+            android:max="98"
             android:defaultValue="69" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_genOther_title">

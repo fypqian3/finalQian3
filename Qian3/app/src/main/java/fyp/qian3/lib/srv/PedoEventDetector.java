@@ -58,9 +58,7 @@ public class PedoEventDetector implements SensorEventListener {
     }
 
     public void setCurrentStep(int step) {
-        SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putInt("data_currSteps", step);
-        editor.commit();
+        mSharedPreferences.edit().putInt("data_currSteps", step).commit();
         CURRENT_SETP = step;
     }
 
@@ -68,7 +66,7 @@ public class PedoEventDetector implements SensorEventListener {
         return CURRENT_SETP;
     }
 
-    public void reloadDetectorSetting() {
+    public void reloadDetectorSensitive() {
         setSensitivity(mSharedPreferences.getInt("pref_genPedoSens", 69));
     }
 
@@ -106,9 +104,8 @@ public class PedoEventDetector implements SensorEventListener {
                             if (isAlmostAsLargeAsPrevious && isPreviousLargeEnough && isNotContra) {
                                 end = System.currentTimeMillis();
                                 if (end - start > 500) {
-                                    Log.i("StepDetector", "CURRENT_SETP:"
-                                            + CURRENT_SETP);
                                     CURRENT_SETP++;
+                                    //Log.i("StepDetector", "CURRENT_SETP:" + CURRENT_SETP);
                                     mLastMatch = extType;
                                     start = end;
 
@@ -118,9 +115,7 @@ public class PedoEventDetector implements SensorEventListener {
                                         mPedoEvent.callChangeListener();
                                     }
 
-                                    SharedPreferences.Editor editor = mSharedPreferences.edit();
-                                    editor.putInt("data_currSteps", CURRENT_SETP);
-                                    editor.commit();
+                                    mSharedPreferences.edit().putInt("data_currSteps", CURRENT_SETP).commit();
                                 }
                             } else {
                                 mLastMatch = -1;

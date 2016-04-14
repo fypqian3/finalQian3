@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:background="#6e6d6d"
+        android:background="@drawable/ee"
         android:orientation="vertical">
 
         <LinearLayout
@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"
             android:gravity="right"
             android:orientation="horizontal">
+
 
             <Button
                 android:id="@+id/btnHomeSetting"
@@ -34,10 +35,10 @@
                 android:text="Setting" />
 
             <Button
+                android:id="@+id/btnHomeCounter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Counter"
-                android:id="@+id/btnHomeCounter" />
+                android:text="Counter" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -46,32 +47,24 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <DatePicker
-                    android:id="@+id/datePicker"
-                    android:layout_width="230dp"
-                    android:layout_height="86dp"
-                    android:layout_gravity="center_horizontal"
-                    android:calendarTextColor="#0c0a0a"
-                    android:datePickerMode="calendar"
-                    android:backgroundTint="#ffffff"
-                    android:spinnersShown="true" />
-
             </LinearLayout>
 
             <ImageButton
                 android:id="@+id/diamond"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
                 android:background="#00000000"
-                android:src="@drawable/diamond" />
+                android:src="@drawable/money"
+                android:paddingTop="10dp" />
 
             <TextView
                 android:id="@+id/money"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|bottom"
-                android:text="20000" />
+                android:layout_gravity="top|center_vertical"
+                android:text="20000"
+                android:textColor="#ffffff"
+                android:textSize="15dp" />
 
 
         </LinearLayout>
@@ -83,9 +76,6 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal">
-
-
-
 
 
         </LinearLayout>
@@ -106,6 +96,7 @@
                 android:layout_width="41dp"
                 android:layout_height="match_parent"
                 android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:soundEffectsEnabled="false"
                 android:src="@drawable/footprint" />
 
@@ -145,39 +136,64 @@
                 android:layout_height="fill_parent"
                 android:layout_gravity="bottom"
                 android:gravity="bottom"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:weightSum="1">
+
+                <TextView
+                    android:id="@+id/tvHomeDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:text="Today's date"
+                    android:textColor="#ffffff"
+                    android:textSize="15dp" />
+
+                <TextView
+
+                    android:id="@+id/tvHomeWeekDay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|right"
+                    android:text="Weekday"
+                    android:textColor="#ffffff"
+                    android:textSize="15dp" />
 
                 <TextView
                     android:id="@+id/textView4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="0"
-                    android:text="Distance"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:text="@string/home_distance"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#ffffff"
+                    android:textSize="15dp" />
 
                 <TextView
                     android:id="@+id/textView5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="9"
-                    android:text="calories"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:text="@string/home_calories"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#ffffff"
+                    android:textSize="15dp" />
 
                 <org.eazegraph.lib.charts.PieChart xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/piechart"
-                    android:layout_width="150dp"
+                    android:layout_width="172dp"
                     android:layout_height="150dp"
+                    android:layout_gravity="center_horizontal"
                     app:egLegendTextSize="18sp"
                     app:egUsePieRotation="true"
                     app:egValueTextSize="36sp"
-                    android:layout_gravity="center_horizontal" />
+                    android:layout_weight="0.38" />
 
                 <ImageView
-                    android:id="@+id/imageView"
+                    android:id="@+id/homeMonster"
                     android:layout_width="match_parent"
                     android:layout_height="140dp"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/a" />
+                    android:src="@drawable/monstertwo" />
 
 
             </LinearLayout>
