@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.media.SoundPool;
+import android.os.Build;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.os.Bundle;
@@ -18,6 +20,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.util.AttributeSet;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
 
 
 import org.eazegraph.lib.charts.PieChart;
@@ -27,7 +32,9 @@ import fyp.qian3.R;
 import fyp.qian3.lib.srv.PedoEvent;
 import fyp.qian3.lib.srv.PedoEventService;
 
+
 import java.util.Calendar;
+import java.util.HashMap;
 
 public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
 
@@ -50,11 +57,37 @@ public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
     //Ryan
     PieModel sliceGoal, sliceCurrent;
     PieChart pcStep;
+    //sam
+    SoundPool mPool;
+    private SoundPool mSoundPool;
+    //private HashMap<Integer, Integer> mSoundPoolMap;
+    private AudioManager mAudioManager;
+    private int id;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        // for soundpool
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_GAME)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .build();
+
+            mSoundPool = new SoundPool.Builder()
+                    .setMaxStreams(5)
+                    .setAudioAttributes(audioAttributes)
+                    .build();
+        } else {
+            mSoundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
+        }
+        // mSoundPool.load(this,R.raw.monsterlaugh);
+       // int music = mSoundPool.load(this, R.raw.monsterlaugh, 1);
+        //mPool.play(music, 1, 1, 1, 0, 1.0f);
+        //load the sound , 1 mean priority
+        id =  mSoundPool.load(getApplicationContext(), R.raw.monsterlaugh, 1);
 
         init();
     }
@@ -64,7 +97,6 @@ public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
         super.onStart();
         // Bind with the service
         bindService(new Intent(this, PedoEventService.class), mConnection, Context.BIND_AUTO_CREATE);
-
 
     }
 
@@ -89,12 +121,21 @@ public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
         if (mPedoSrvBound) {
             tvCurrStep.setText(String.valueOf(mPedoSrvBinder.getCurrStep()));
 
+            Animation am = new TranslateAnimation(0.0f, 0f, 0.0f, -40.0f);
+            //setDuration (long durationMillis)
+            am.setDuration(100);
+            //setRepeatCount (int repeatCount)
+            am.setRepeatCount(0);
+            //start jumping
+            ivMonster.startAnimation(am);
+
             double weight = sharedPrefs.getInt("pref_pinfoPersWeight", 0);
             double distances = sharedPrefs.getInt("pref_pinfoPersStepLength", 0)* mPedoSrvBinder.getCurrStep() * 0.00001;
             double caloriesBuried = 47 * distances * weight / 60;
             calories.setText(String.format("%.2f", caloriesBuried) + " cal");
             distance.setText(String.format("%.2f", distances) + " km");
             updatePie(mPedoSrvBinder.getCurrStep(),10000);
+
         } else {
             Log.e("HomeAct", "Error: Service not bound!");
         }
@@ -244,6 +285,8 @@ public class HomeAct extends Activity implements PedoEvent.onPedoEventListener {
                 am.setRepeatCount(4);
                 //start jumping
                 ivMonster.startAnimation(am);
+                //laugh when click using soundpool (id of music, leftVol , RightVol, priority, loop(0 or 1 ) , rate 0.5 -2)
+                mSoundPool.play(id,1f,1f,1,0,2);
             }
         });
     }
