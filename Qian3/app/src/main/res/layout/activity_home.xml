@@ -54,8 +54,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="#00000000"
-                android:src="@drawable/money"
-                android:paddingTop="10dp" />
+                android:paddingTop="10dp"
+                android:src="@drawable/money" />
 
             <TextView
                 android:id="@+id/money"
@@ -158,12 +158,13 @@
                     android:textColor="#ffffff"
                     android:textSize="15dp" />
 
+
                 <TextView
-                    android:id="@+id/tvCaloriesBurned"
+                    android:id="@+id/tvDistance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_column="9"
-                    android:text="@string/home_calories"
+                    android:layout_column="0"
+                    android:text="@string/home_distance"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="#ffffff"
                     android:textSize="15dp" />
@@ -178,16 +179,16 @@
                     android:textColor="#ffffff"
                     android:textSize="15dp" />
 
-
                 <TextView
-                    android:id="@+id/tvDistance"
+                    android:id="@+id/tvCaloriesBurned"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_column="0"
-                    android:text="@string/home_distance"
+                    android:layout_column="9"
+                    android:text="@string/home_calories"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="#ffffff"
                     android:textSize="15dp" />
+
 
                 <TextView
                     android:id="@+id/tvCalories"
@@ -199,19 +200,26 @@
                     android:textColor="#ffffff"
                     android:textSize="15dp" />
 
+
                 <org.eazegraph.lib.charts.PieChart xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/piechart"
                     android:layout_width="172dp"
                     android:layout_height="150dp"
                     android:layout_gravity="center_horizontal"
+                    android:layout_weight="0.38"
                     app:egLegendTextSize="18sp"
                     app:egUsePieRotation="true"
-                    app:egValueTextSize="36sp"
-                    android:layout_weight="0.38" />
+                    app:egValueTextSize="36sp" />
+
+                <!--<ImageView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:id="@+id/testing"-->
+                    <!--android:background="@drawable/animation_loading" />-->
 
                 <ImageView
                     android:id="@+id/homeMonster"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="140dp"
                     android:layout_gravity="center_horizontal"
                     android:src="@drawable/monstertwo" />
