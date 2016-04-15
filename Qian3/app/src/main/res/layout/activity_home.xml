@@ -19,26 +19,27 @@
             android:id="@+id/firstPart"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
+            android:gravity="left"
             android:orientation="horizontal">
 
-
-            <Button
-                android:id="@+id/btnHomeSetting"
+            <TextView
+                android:id="@+id/tvHomeDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:clickable="true"
-                android:enabled="true"
-                android:text="Setting" />
+                android:layout_gravity="right"
+                android:text="Today's date"
+                android:textColor="#ffffff"
+                android:textSize="15dp" />
 
-            <Button
-                android:id="@+id/btnHomeCounter"
+            <TextView
+
+                android:id="@+id/tvHomeWeekDay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Counter" />
+                android:layout_gravity="center_horizontal|right"
+                android:text="Weekday"
+                android:textColor="#ffffff"
+                android:textSize="15dp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -49,40 +50,12 @@
 
             </LinearLayout>
 
-            <ImageButton
-                android:id="@+id/diamond"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#00000000"
-                android:paddingTop="10dp"
-                android:src="@drawable/money" />
-
-            <TextView
-                android:id="@+id/money"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top|center_vertical"
-                android:text="20000"
-                android:textColor="#ffffff"
-                android:textSize="15dp" />
-
 
         </LinearLayout>
 
 
         <LinearLayout
-            android:id="@+id/todayactivity"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/thirdPart"
+            android:id="@+id/secondPart"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -121,162 +94,97 @@
 
             />
         </LinearLayout>
-
-
         <LinearLayout
-            android:id="@+id/fourthPart"
-            android:layout_width="fill_parent"
+            android:id="@+id/fourthpart"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:id="@+id/mainpart_layout"
-                android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:layout_gravity="bottom"
-                android:gravity="bottom"
-                android:orientation="vertical"
-                android:weightSum="1">
-
-                <TextView
-                    android:id="@+id/tvHomeDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:text="Today's date"
-                    android:textColor="#ffffff"
-                    android:textSize="15dp" />
-
-                <TextView
-
-                    android:id="@+id/tvHomeWeekDay"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|right"
-                    android:text="Weekday"
-                    android:textColor="#ffffff"
-                    android:textSize="15dp" />
+            android:gravity="bottom"
+            android:orientation="vertical"
+            android:weightSum="1">
 
 
-                <TextView
-                    android:id="@+id/tvDistance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="0"
-                    android:text="@string/home_distance"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#ffffff"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/tvDistanceWalked"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="0"
-                    android:text="value"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#ffffff"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/tvCaloriesBurned"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="9"
-                    android:text="@string/home_calories"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#ffffff"
-                    android:textSize="15dp" />
+            <org.eazegraph.lib.charts.PieChart xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/piechart"
+                android:layout_width="224dp"
+                android:layout_height="230dp"
+                android:layout_gravity="center_horizontal"
+                app:egLegendTextSize="18sp"
+                app:egUsePieRotation="true"
+                app:egValueTextSize="36sp" />
 
 
-                <TextView
-                    android:id="@+id/tvCalories"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="9"
-                    android:text="value"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#ffffff"
-                    android:textSize="15dp" />
-
-
-                <org.eazegraph.lib.charts.PieChart xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/piechart"
-                    android:layout_width="172dp"
-                    android:layout_height="150dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_weight="0.38"
-                    app:egLegendTextSize="18sp"
-                    app:egUsePieRotation="true"
-                    app:egValueTextSize="36sp" />
-
-                <!--<ImageView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:id="@+id/testing"-->
-                    <!--android:background="@drawable/animation_loading" />-->
-
-                <ImageView
-                    android:id="@+id/homeMonster"
-                    android:layout_width="wrap_content"
-                    android:layout_height="140dp"
-                    android:layout_gravity="center_horizontal"
-                    android:src="@drawable/monstertwo" />
-
-
-            </LinearLayout>
 
         </LinearLayout>
 
+
         <LinearLayout
-            android:id="@+id/fifthPart"
-            android:layout_width="match_parent"
+            android:id="@+id/thirdpart"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="#020202"
-            android:orientation="horizontal"
-            android:paddingBottom="5dp"
-            android:paddingTop="10dp">
+            android:gravity="center"
+            android:orientation="horizontal">
 
-            <ImageButton
-                android:id="@+id/hone"
+            <TextView
+                android:id="@+id/tvCaloriesBurned"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="#00000000"
-                android:src="@drawable/home" />
+                android:layout_column="9"
+                android:text="@string/home_calories"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#ffffff"
+                android:textSize="20dp" />
 
-
-            <ImageButton
-                android:id="@+id/personal_info"
+            <TextView
+                android:id="@+id/tvCalories"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_weight="1"
-                android:background="#00000000"
-                android:src="@drawable/user" />
+                android:layout_column="9"
+                android:text="value"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#ffffff"
+                android:textSize="15dp" />
 
 
-            <ImageButton
-                android:id="@+id/statistic"
+            <TextView
+                android:id="@+id/tvDistance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_weight="1"
-                android:background="#00000000"
-                android:src="@drawable/bar" />
+                android:layout_column="0"
+                android:text="@string/home_distance"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#ffffff"
+                android:textSize="15dp" />
 
-
-            <ImageButton
-                android:id="@+id/ranking"
+            <TextView
+                android:id="@+id/tvDistanceWalked"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center_horizontal"
-                android:layout_weight="1"
-                android:background="#00000000"
-                android:src="@drawable/group" />
+                android:layout_column="0"
+                android:text="value"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#ffffff"
+                android:textSize="15dp" />
+
+        </LinearLayout>
 
 
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/fifthpart"
+            android:layout_gravity="bottom"
+            android:gravity="bottom"
+            android:paddingBottom="50dp">
+
+            <ImageView
+                android:id="@+id/homeMonster"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/monstertwo"
+                android:layout_gravity="bottom|center_horizontal" />
         </LinearLayout>
 
     </LinearLayout>

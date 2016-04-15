@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.GuideAct"
+            android:name=".ui.LoadingAct"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -20,6 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        土
         <activity
             android:name=".ui.LoginAct"
             android:label="@string/login_act"
@@ -45,7 +46,8 @@
             android:name=".ui.SocialAct"
             android:label="@string/social_act"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.CounterAct"
+        <activity
+            android:name=".ui.CounterAct"
             android:label="@string/counter_act"
             android:screenOrientation="portrait" />
         <activity
@@ -53,6 +55,7 @@
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".ui.GuideAct" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -62,6 +65,8 @@
             android:name=".lib.srv.PedoEventService"
             android:enabled="true"
             android:exported="true" />
+
+        <activity android:name=".ui.GuideAct"></activity>
 
     </application>
 
