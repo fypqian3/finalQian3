@@ -3,6 +3,7 @@
     package="fyp.qian3">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
@@ -28,6 +29,7 @@
             android:name=".ui.HomeAct"
             android:label="@string/home_act"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.SettingAct"
@@ -68,6 +70,14 @@
             <intent-filter>
                 <action android:name="first_remind" />
                 <action android:name="second_remind" />
+                <action android:name="database_update" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".lib.srv.BootUpReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 

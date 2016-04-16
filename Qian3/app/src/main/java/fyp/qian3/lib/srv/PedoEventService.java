@@ -46,7 +46,7 @@ public class PedoEventService extends Service implements PedoEvent.onPedoEventLi
 
     // Notification
     // Foreground Notification
-    private final int mFGNotifyID = 0;
+    private final int mFGNotifyID = 10;
     private NotificationManager mFGNotificationMgr;
     private Notification.Builder mFGNotificationBuilder;
     private int FGNProgressMax;
@@ -57,7 +57,7 @@ public class PedoEventService extends Service implements PedoEvent.onPedoEventLi
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d(TAG, "Srv onCreate()");
+        Log.i(TAG, "Srv onCreate()");
 
         init();
     }
@@ -65,7 +65,7 @@ public class PedoEventService extends Service implements PedoEvent.onPedoEventLi
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d(TAG, "Srv onDestroy()");
+        Log.i(TAG, "Srv onDestroy()");
 
         SrvFlag = false;
         if (mPedoEventDetector != null) {
@@ -76,14 +76,13 @@ public class PedoEventService extends Service implements PedoEvent.onPedoEventLi
 
     @Override
     public IBinder onBind(Intent intent) {
-        Log.d(TAG, "Srv onBind()");
+        Log.i(TAG, "Srv onBind()");
         return mBinder;
     }
 
     @Override
     public boolean onUnbind(Intent intent) {
-        // Set mPedoEvent to null, no activity is using onPedoDetected() method
-        mPedoEventDetector.setPedoEvent(null);
+        Log.i(TAG, "Srv onUnbind()");
         return false;
     }
 
@@ -111,7 +110,7 @@ public class PedoEventService extends Service implements PedoEvent.onPedoEventLi
         // Sensor monitor
         registerListener();
 
-        if (mSharedPreferences.getBoolean("pref_genOtherNotif", false)) {
+        if (mSharedPreferences.getBoolean("pref_genPedoSrvNotif", false)) {
             setFGNotification();
             mFGNotificationMgr.notify(mFGNotifyID, mFGNotificationBuilder.build());
         }
@@ -128,7 +127,7 @@ public class PedoEventService extends Service implements PedoEvent.onPedoEventLi
         final int flags = PendingIntent.FLAG_CANCEL_CURRENT;
         // When foreground notification clicked, go to HomeAct
         PendingIntent pendingIntent = PendingIntent.getActivity(
-                getApplicationContext(), requestCode, new Intent(this, HomeAct.class), flags);
+                this, requestCode, new Intent(this, HomeAct.class), flags);
 
         mFGNotificationMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mFGNotificationBuilder = new Notification.Builder(getApplicationContext())

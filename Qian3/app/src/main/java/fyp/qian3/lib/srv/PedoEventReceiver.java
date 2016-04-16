@@ -35,7 +35,7 @@ public class PedoEventReceiver extends BroadcastReceiver {
     private NotificationManager mBGNotificationMgr;
     private Notification.Builder mBGNotificationBuilder;
 
-    //public PedoEventReceiver () {}
+    public PedoEventReceiver () {}
 
     public PedoEventReceiver (Context context, PedoEventDetector ped) {
         mDatabase = Database.getInstance(context);
@@ -63,7 +63,7 @@ public class PedoEventReceiver extends BroadcastReceiver {
                 if (percentFinished < 70) {
                     String ctTitle = context.getResources().getString(R.string.notif_BGctTitle_general);
                     String ctText = String.valueOf(percentFinished) +
-                            context.getResources().getString(R.string.notif_BGctText_general);
+                            context.getResources().getString(R.string.notif_BGctText_lastRemind);
                     setBGNotification(ctTitle, ctText, context, intent);
                     mBGNotificationMgr.notify(mBGNotifyID, mBGNotificationBuilder.build());
                 }

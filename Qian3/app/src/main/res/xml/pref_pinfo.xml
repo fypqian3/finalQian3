@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" xmlns:qian3="http://schemas.android.com/apk/fyp.qian3.lib.pref.SeekBarPreference">
     <PreferenceCategory android:title="@string/pref_pinfoPers_title">
+        <ListPreference
+            android:key="pref_pinfoPersGender"
+            android:title="@string/pref_pinfoPersGender_title"
+            android:summary="@string/pref_pinfoPersGender_summary"
+            android:entries="@array/pref_pinfoPersGender_list_titles"
+            android:entryValues="@array/pref_pinfoPersGender_list_values"
+            android:defaultValue="0" />
+        <fyp.qian3.lib.pref.DatePickerPreference
+            android:key="pref_pinfoPersBirth"
+            android:title="@string/pref_pinfoPersBirth_title"
+            android:summary="@string/pref_pinfoPersBirth_summary"
+            android:selectAllOnFocus="true"
+            android:defaultValue="19950001"
+            android:persistent="true"
+            android:inputType="numberDecimal" />
         <fyp.qian3.lib.pref.NumberPickerPreference
             android:key="pref_pinfoPersHeight"
             android:title="@string/pref_pinfoPersHeight_title"

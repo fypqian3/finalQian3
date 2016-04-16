@@ -14,7 +14,7 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_genOther_title">
         <SwitchPreference
-            android:key="pref_genOtherNotif"
+            android:key="pref_genPedoSrvNotif"
             android:title="@string/pref_genOtherNotif_title"
             android:summary="@string/pref_genOtherNotif_summary"
             android:defaultValue="false" />

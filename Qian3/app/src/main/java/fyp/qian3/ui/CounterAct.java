@@ -52,15 +52,17 @@ public class CounterAct extends Activity implements PedoEvent.onPedoEventListene
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
         // Bind with the service
         bindService(new Intent(this, PedoEventService.class), mConnection, Context.BIND_AUTO_CREATE);
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onPause() {
+        super.onPause();
+        // Set mPedoEvent to null, no activity is using onPedoDetected() method
+        mPedoSrvBinder.setPedoEvent(null);
         // Unbind from the service
         if (mPedoSrvBound) {
             unbindService(mConnection);

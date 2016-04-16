@@ -15,6 +15,7 @@
     <string name="notif_FGctText_HasFinished">% has finished!</string>
     <string name="notif_BGctTitle_general">Qian3 Reminder</string>
     <string name="notif_BGctText_general">% has finished! Keep going!</string>
+    <string name="notif_BGctText_lastRemind">% has finished only! Hurry up!</string>
 
     <!-- Home Activity -->
     <string name="home_sunday">Sunday</string>
@@ -57,6 +58,18 @@
     <string name="pref_pinfo_title">Personal Information</string>
     <string name="pref_pinfo_summary">Set your personal information for more functions</string>
     <string name="pref_pinfoPers_title">Personal</string>
+    <string name="pref_pinfoPersBirth_title">Birthday</string>
+    <string name="pref_pinfoPersBirth_summary">Please input your birthday</string>
+    <string name="pref_pinfoPersGender_title">Gender</string>
+    <string name="pref_pinfoPersGender_summary">Gender</string>
+    <string-array name="pref_pinfoPersGender_list_titles">
+        <item>"Male"</item>
+        <item>"Female"</item>
+    </string-array>
+    <string-array name="pref_pinfoPersGender_list_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
     <string name="pref_pinfoPersHeight_title">Height</string>
     <string name="pref_pinfoPersHeight_summary">Please input your height (cm)</string>
     <string name="pref_pinfoPersWeight_title">Weight</string>
