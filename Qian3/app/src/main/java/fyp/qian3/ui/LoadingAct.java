@@ -29,8 +29,8 @@ public class LoadingAct extends Activity {
 
         // Start the animation (looped playback by default).
         frameAnimation.start();
-
-        new CountDownTimer(6000, 1200) {
+        // future, interval
+        new CountDownTimer(2000,1000) {
             public void onTick(long millisUntilFinished) {
             }
 
@@ -39,5 +39,7 @@ public class LoadingAct extends Activity {
             }
         }.start();
 
+
     }
+
 }
