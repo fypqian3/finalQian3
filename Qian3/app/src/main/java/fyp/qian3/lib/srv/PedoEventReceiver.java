@@ -27,7 +27,7 @@ public class PedoEventReceiver extends BroadcastReceiver {
     PendingIntent mPendingIntent[] = new PendingIntent[ALARM_NUM];
 
     private Database mDatabase;
-    private static int CURR_DATE;
+    private int CURR_DATE;
 
     private PedoEventDetector mPedoEventDetector;
 
@@ -80,7 +80,8 @@ public class PedoEventReceiver extends BroadcastReceiver {
     public void updateDB(Context context) {
         SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         CURR_DATE = mSharedPreferences.getInt("data_currDate", 0);
-        int sysDate = mDatabase.cvtCalendarToID(Calendar.getInstance());
+        mDatabase = Database.getInstance(context);
+        int sysDate = Database.cvtCalendarToID(Calendar.getInstance());
 
         if (CURR_DATE != sysDate) {
             registerGeneralAlarm(context, 0);
@@ -88,6 +89,7 @@ public class PedoEventReceiver extends BroadcastReceiver {
                 // First time to open app
                 CURR_DATE = sysDate;
                 mSharedPreferences.edit().putInt("data_currDate", CURR_DATE).commit();
+                Log.i("Receiver", "First time. Database not update.");
             } else {
                 // It's a new day (maybe 2 or more days later)
                 mDatabase.setSteps(CURR_DATE, mSharedPreferences.getInt("data_currSteps", 0));
@@ -95,10 +97,12 @@ public class PedoEventReceiver extends BroadcastReceiver {
                 mSharedPreferences.edit().putInt("data_currDate", CURR_DATE).commit();
                 // Reset counter
                 mPedoEventDetector.setCurrentStep(0);
+                Log.i("Receiver", "New day. Database updated.");
             }
         } else {
             // Regular store
             mDatabase.setSteps(CURR_DATE, mSharedPreferences.getInt("data_currSteps", 0));
+            Log.i("Receiver", "Regular updated");
         }
     }
 
