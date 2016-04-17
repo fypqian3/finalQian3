@@ -78,6 +78,7 @@ public class SettingAct extends PreferenceActivity {
             findPreference("pref_genPedoSrv").setOnPreferenceChangeListener(this);
             findPreference("pref_genPedoSrvNotif").setOnPreferenceChangeListener(this);
             findPreference("pref_genPedoSens").setOnPreferenceChangeListener(this);
+            findPreference("pref_genOtherMusic").setOnPreferenceChangeListener(this);
         }
 
         @Override
@@ -119,6 +120,13 @@ public class SettingAct extends PreferenceActivity {
                     break;
                 case "pref_genPedoSens":
                     Log.v("Key_genPedoSensPref", Integer.toString((Integer) newValue));
+                    break;
+                case "pref_genOtherMusic":
+                    if ((boolean) newValue) {
+                        //getActivity().startService(new Intent(getActivity(), BackgroundMusicService.class));
+                    } else {
+                        //getActivity().stopService(new Intent(getActivity(), BackgroundMusicService.class));
+                    }
                     break;
             }
             return true;
