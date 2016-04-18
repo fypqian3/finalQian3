@@ -30,6 +30,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        土
         <activity
             android:name=".ui.SettingAct"
             android:label="@string/setting_act"
@@ -53,6 +54,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light" />
         <activity
+<<<<<<< HEAD
             android:name=".ui.CounterAct"
             android:label="@string/timer_act"
             android:parentActivityName=".ui.HomeAct"
@@ -63,11 +65,21 @@
             android:parentActivityName=".ui.HomeAct"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light" />
+=======
+            android:name=".ui.SocialAct"
+            android:label="@string/social_act"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.CounterAct"
+            android:label="@string/counter_act"
+            android:screenOrientation="portrait" />
+>>>>>>> origin/ryan
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".ui.GuideAct" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -84,6 +96,7 @@
             android:enabled="true"
             android:exported="true" />
 
+<<<<<<< HEAD
         <provider
             android:name="com.facebook.FacebookContentProvider"
             android:authorities="com.facebook.app.FacebookContentProvider442376969294550"
@@ -104,6 +117,13 @@
         -->
 
 
+=======
+
+        <service
+            android:name=".lib.srv.BackgroundSoundService"
+            android:enabled="true"
+            android:exported="true"></service>
+>>>>>>> origin/ryan
     </application>
 
 </manifest>

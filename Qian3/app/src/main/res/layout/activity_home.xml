@@ -39,8 +39,12 @@
                 android:layout_gravity="center_horizontal|right"
                 android:text="Weekday"
                 android:textColor="#ffffff"
+<<<<<<< HEAD
                 android:textSize="15dp"
                 android:paddingLeft="13dp" />
+=======
+                android:textSize="15dp" />
+>>>>>>> origin/ryan
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -95,6 +99,7 @@
 
             />
         </LinearLayout>
+<<<<<<< HEAD
         <LinearLayout
             android:id="@+id/thirdpart"
             android:layout_width="match_parent"
@@ -125,6 +130,25 @@
             android:gravity="center"
             android:orientation="horizontal">
 
+=======
+        <LinearLayout
+            android:id="@+id/fourthpart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+
+            <org.eazegraph.lib.charts.PieChart xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/piechart"
+                android:layout_width="224dp"
+                android:layout_height="230dp"
+                android:layout_gravity="center_horizontal"
+                app:egLegendTextSize="18sp"
+                app:egUsePieRotation="true"
+                app:egValueTextSize="36sp" />
+>>>>>>> origin/ryan
 
             <ImageView
                 android:layout_width="30dp"
@@ -157,6 +181,7 @@
 
 
         <LinearLayout
+<<<<<<< HEAD
             android:id="@+id/fifthpart"
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -204,6 +229,73 @@
                 android:id="@+id/homeMonster"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+=======
+            android:id="@+id/thirdpart"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvCaloriesBurned"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="9"
+                android:text="@string/home_calories"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#ffffff"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/tvCalories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="9"
+                android:text="value"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#ffffff"
+                android:textSize="15dp" />
+
+
+            <TextView
+                android:id="@+id/tvDistance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:text="@string/home_distance"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#ffffff"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/tvDistanceWalked"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:text="value"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#ffffff"
+                android:textSize="15dp" />
+
+        </LinearLayout>
+
+
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/fifthpart"
+            android:layout_gravity="bottom"
+            android:gravity="bottom"
+            android:paddingBottom="50dp">
+
+            <ImageView
+                android:id="@+id/homeMonster"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+>>>>>>> origin/ryan
                 android:src="@drawable/monstertwo"
                 android:layout_gravity="bottom|center_horizontal" />
         </LinearLayout>
