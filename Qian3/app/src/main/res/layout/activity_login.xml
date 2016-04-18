@@ -8,6 +8,7 @@
 
     <LinearLayout
         android:orientation="horizontal"
+        android:background="@drawable/ooo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
@@ -45,6 +46,7 @@
         android:id="@+id/btnLoginLogin"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:background="@drawable/bg_color_gradient"
         android:layout_marginBottom="137dp" />
 
 </RelativeLayout>

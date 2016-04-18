@@ -24,8 +24,8 @@
     <string name="home_saturday">Saturday</string>
     <string name="home_month">month\t</string>
     <string name="home_day">day</string>
-    <string name="home_calories">calories burned</string>
-    <string name="home_distance">distance walked</string>
+    <string name="home_calories">calories burned: </string>
+    <string name="home_distance">distance walked: </string>
 
     <!-- Guide Activity -->
     <string name="guide_introduction">This is a mobile step counter help you to counter your steps.</string>

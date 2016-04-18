@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" xmlns:qian3="http://schemas.android.com/apk/fyp.qian3.lib.pref.SeekBarPreference">
     <PreferenceCategory android:title="@string/pref_pinfoPers_title">
-        <fyp.qian3.lib.pref.NumberPickerPreference
+        <fyp.app.lib.pref.NumberPickerPreference
             android:key="pref_pinfoPersHeight"
             android:title="@string/pref_pinfoPersHeight_title"
             android:summary="@string/pref_pinfoPersHeight_summary"
@@ -11,7 +11,7 @@
             android:defaultValue="170"
             android:persistent="true"
             android:inputType="numberDecimal" />
-        <fyp.qian3.lib.pref.NumberPickerPreference
+        <fyp.app.lib.pref.NumberPickerPreference
             android:key="pref_pinfoPersWeight"
             android:title="@string/pref_pinfoPersWeight_title"
             android:summary="@string/pref_pinfoPersWeight_summary"
@@ -21,7 +21,7 @@
             android:defaultValue="55"
             android:persistent="true"
             android:inputType="numberDecimal" />
-        <fyp.qian3.lib.pref.NumberPickerPreference
+        <fyp.app.lib.pref.NumberPickerPreference
             android:key="pref_pinfoPersStepLength"
             android:title="@string/pref_pinfoPersStepLength_title"
             android:summary="@string/pref_pinfoPersStepLength_summary"

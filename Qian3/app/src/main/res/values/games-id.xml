@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Google Play game services IDs.
+Save this file as res/values/games-ids.xml in your project.
+-->
+<resources>
+    <string name="app_id">535059156723</string>
+    <string name="package_name">com.counter.app</string>
+    <string name="achievement_monster_walker_1">CgkI852LoMkPEAIQCQ</string>
+    <string name="achievement_monster_walker_2">CgkI852LoMkPEAIQCg</string>
+    <string name="achievement_monster_walker_3">CgkI852LoMkPEAIQCw</string>
+    <string name="achievement_monster_walker_4">CgkI852LoMkPEAIQDA</string>
+    <string name="achievement_monster_walker_5">CgkI852LoMkPEAIQDQ</string>
+    <string name="achievement_stamina_1">CgkI852LoMkPEAIQDg</string>
+    <string name="achievement_stamina_2">CgkI852LoMkPEAIQDw</string>
+    <string name="achievement_stamina_3">CgkI852LoMkPEAIQEA</string>
+    <string name="achievement_stamina_4">CgkI852LoMkPEAIQEQ</string>
+    <string name="achievement_rambler_1">CgkI852LoMkPEAIQEg</string>
+    <string name="achievement_rambler_2">CgkI852LoMkPEAIQEw</string>
+    <string name="achievement_rambler_3">CgkI852LoMkPEAIQFA</string>
+    <string name="achievement_rambler_4">CgkI852LoMkPEAIQFQ</string>
+    <string name="leaderboard_most_steps_walked">CgkI852LoMkPEAIQFg</string>
+    <string name="leaderboard_most_steps_walk_in_one_day">CgkI852LoMkPEAIQFw</string>
+</resources>

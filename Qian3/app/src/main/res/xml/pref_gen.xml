@@ -6,7 +6,7 @@
             android:title="@string/pref_genPedoSrv_title"
             android:summary="@string/pref_genPedoSrv_summary"
             android:defaultValue="false" />
-        <fyp.qian3.lib.pref.SeekBarPreference
+        <fyp.app.lib.pref.SeekBarPreference
             android:key="pref_genPedoSens"
             android:title="@string/pref_genPedoSens_title"
             android:max="99"

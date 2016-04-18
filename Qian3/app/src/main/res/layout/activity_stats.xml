@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="10dp"
+    android:background="@drawable/ooo"
     tools:context="fyp.qian3.Activity.StatsAct">
 
     <TextView
@@ -18,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:text="record" />
+        android:text="Highest record" />
 
     <TextView
         android:id="@+id/totalthisweek"
@@ -31,7 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:text="total_last_7_days" />
+        android:text="Total last 7 days" />
 
     <TextView
         android:id="@+id/averagethisweek"
@@ -44,7 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:text="average_last_7_days" />
+        android:text="Average last 7 days" />
 
     <TextView
         android:id="@+id/totalthismonth"
@@ -57,7 +58,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:text="total_this_month" />
+        android:text="Total this month" />
 
     <TextView
         android:id="@+id/averagethismonth"
@@ -70,7 +71,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:text="average_this_month" />
+        android:text="Average this month" />
 
     <View
         android:layout_width="fill_parent"
@@ -86,13 +87,4 @@
         eaze:egLegendHeight="35dp"
         eaze:egShowValues="true"/>
 
-    <Button
-        android:id="@+id/close"
-        style="?android:attr/buttonBarButtonStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="Back" />
-
 </LinearLayout>
-
