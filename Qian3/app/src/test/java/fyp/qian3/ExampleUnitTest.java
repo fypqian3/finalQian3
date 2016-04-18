@@ -1,4 +1,4 @@
-package fyp.qian3;
+package fyp.app;
 
 import org.junit.Test;
 

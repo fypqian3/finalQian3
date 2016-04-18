@@ -6,15 +6,15 @@
             android:title="@string/pref_genPedoSrv_title"
             android:summary="@string/pref_genPedoSrv_summary"
             android:defaultValue="false" />
-        <fyp.qian3.lib.pref.SeekBarPreference
+        <com.counter.app.lib.pref.SeekBarPreference
             android:key="pref_genPedoSens"
             android:title="@string/pref_genPedoSens_title"
-            android:max="99"
+            android:max="98"
             android:defaultValue="69" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_genOther_title">
         <SwitchPreference
-            android:key="pref_genOtherNotif"
+            android:key="pref_genPedoSrvNotif"
             android:title="@string/pref_genOtherNotif_title"
             android:summary="@string/pref_genOtherNotif_summary"
             android:defaultValue="false" />

@@ -3,11 +3,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+
     tools:context="fyp.qian3.ui.LoginAct">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:background="@drawable/ooo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="82dp">
+
+
+        <ImageView
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:id="@+id/imageView4"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/monsterone"
+            android:layout_weight="1" />
+        <ImageView
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:id="@+id/imageView5"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/monstertwo"
+            android:layout_weight="1" />
+        <ImageView
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:id="@+id/imageView6"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/monsterthree"
+            android:layout_weight="1" />
+    </LinearLayout>
 
     <Button
         android:layout_width="wrap_content"
@@ -16,5 +46,7 @@
         android:id="@+id/btnLoginLogin"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:background="@drawable/bg_color_gradient"
         android:layout_marginBottom="137dp" />
+
 </RelativeLayout>

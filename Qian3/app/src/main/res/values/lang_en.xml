@@ -14,6 +14,28 @@
     <string name="counter_btnStartPause_pause">Pause</string>
     <string name="counter_btnStop_stop">Stop</string>
 
+    <!-- Home Activity -->
+    <string name="home_sunday">Sunday</string>
+    <string name="home_monday">Monday</string>
+    <string name="home_tuesday">Tuesday</string>
+    <string name="home_wednesday">Wednesday</string>
+    <string name="home_thursday">Thursday</string>
+    <string name="home_friday">Friday</string>
+    <string name="home_saturday">Saturday</string>
+    <string name="home_month">month\t</string>
+    <string name="home_day">day</string>
+    <string name="home_calories">calories burned: </string>
+    <string name="home_distance">distance walked: </string>
+    <!-- Notification -->
+    <string name="notif_title">Progress</string>
+    <string name="notif_FGctTitle">Step Progress</string>
+    <string name="notif_FGctText_HasFinished">% has finished!</string>
+    <string name="notif_BGctTitle_general">Qian3 Reminder</string>
+    <string name="notif_BGctText_general">% has finished! Keep going!</string>
+    <string name="notif_BGctText_lastRemind">% has finished only! Hurry up!</string>
+
+    <!-- Guide Activity -->
+    <string name="guide_introduction">This is a mobile step counter help you to counter your steps.</string>
     <!-- Preference -->
     <!-- General Preference -->
     <string name="pref_gen_title">General</string>
@@ -24,8 +46,8 @@
     <string name="pref_genPedoSens_title">Sensitive</string>
     <string name="pref_genPedoSens_summary">Middle</string>
     <string name="pref_genOther_title">Others</string>
-    <string name="pref_genOtherNotif_title">Notification</string>
-    <string name="pref_genOtherNotif_summary">Notification</string>
+    <string name="pref_genOtherNotif_title">Foreground Notification</string>
+    <string name="pref_genOtherNotif_summary">Show your progress in notification bar</string>
     <string name="pref_genOtherMusic_title">Music</string>
     <string name="pref_genOtherMusic_summary">Music</string>
     <string name="pref_genResetData_text">Reset Data</string>
@@ -34,6 +56,18 @@
     <string name="pref_pinfo_title">Personal Information</string>
     <string name="pref_pinfo_summary">Set your personal information for more functions</string>
     <string name="pref_pinfoPers_title">Personal</string>
+    <string name="pref_pinfoPersBirth_title">Birthday</string>
+    <string name="pref_pinfoPersBirth_summary">Please input your birthday</string>
+    <string name="pref_pinfoPersGender_title">Gender</string>
+    <string name="pref_pinfoPersGender_summary">Gender</string>
+    <string-array name="pref_pinfoPersGender_list_titles">
+        <item>"Male"</item>
+        <item>"Female"</item>
+    </string-array>
+    <string-array name="pref_pinfoPersGender_list_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
     <string name="pref_pinfoPersHeight_title">Height</string>
     <string name="pref_pinfoPersHeight_summary">Please input your height (cm)</string>
     <string name="pref_pinfoPersWeight_title">Weight</string>
